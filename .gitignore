@@ -19,3 +19,4 @@ Reference
 06_02_DoG_SIFT_SIFT.pdf
 06_01_DoG_SIFT_DoG.pdf
 fall_2020/hw6_release/list_landmarks_align_celeba.txt
+*.pyc

@@ -5,3 +5,9 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 ### hw0 
 * Linear Algebra and Numpy review 
 * Image manipulation
+    - laod image 
+    - crop image
+    - image dimmer
+    - resize image
+    - Rotating 2D coordinates
+    - Rotate image 

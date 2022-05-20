@@ -89,7 +89,7 @@ def euclidean_distance_native(u, v):
     #     sum.
 
     ### YOUR CODE HERE
-    pass
+    return sum([(i-j)**2 for (i, j) in zip(u,v)])**0.5
     ### END YOUR CODE
 
 
@@ -121,7 +121,7 @@ def euclidean_distance_numpy(u, v):
     #     sum.
 
     ### YOUR CODE HERE
-    pass
+    return np.sum((u-v)**2)**0.5
     ### END YOUR CODE
 
 

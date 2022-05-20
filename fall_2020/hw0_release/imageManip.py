@@ -20,7 +20,7 @@ def load(image_path):
 
     ### YOUR CODE HERE
     # Use skimage io.imread
-    pass
+    out = io.imread(image_path)
     ### END YOUR CODE
 
     # Let's convert the image to be between the correct range.
@@ -45,7 +45,7 @@ def crop_image(image, start_row, start_col, num_rows, num_cols):
     out = None
 
     ### YOUR CODE HERE
-    pass
+    out = image[start_col:start_col+num_cols, start_row:start_row+num_rows,:]
     ### END YOUR CODE
 
     return out
@@ -68,7 +68,7 @@ def dim_image(image):
     out = None
 
     ### YOUR CODE HERE
-    pass
+    out = 0.5*(image**2)
     ### END YOUR CODE
 
     return out
@@ -96,7 +96,21 @@ def resize_image(input_image, output_rows, output_cols):
     #    > This should require two nested for loops!
 
     ### YOUR CODE HERE
-    pass
+    factor_row = input_rows/output_rows
+    factor_col = input_cols/output_cols
+    for col in range(output_cols):
+        for row in range(output_rows):
+            output_image[row][col] = input_image[int(row*factor_row)][int(col*factor_col)]
+    
+    # factor_row = output_rows/input_rows
+    # factor_col = output_rows/input_cols
+    # col = 0
+    # row = 0
+    # # input=400*400, ouput=100*100
+    # for _ in range(input_cols):
+    #     for _ in range(input_rows):
+    #         output_image[row][col] = input_image[int(row*factor_row)][int(col*factor_col)]
+    
     ### END YOUR CODE
 
     # 3. Return the output image
@@ -119,7 +133,20 @@ def rotate2d(point, theta):
     # Reminder: np.cos() and np.sin() will be useful here!
 
     ## YOUR CODE HERE
-    pass
+    # rotate point with angle:theta clockwise
+    # x' = cos(theta)-sin(theta)
+    # y' = sin(theta)+cos(theta)
+    # |x'| = R|x|
+    # |y'|    |y|
+    # R = | cos(theta) -sin(theta)|
+    #     | sin(theta)  cos(theta)|
+    # p' = Rp
+    R = np.array([
+        [np.cos(theta), -np.sin(theta)],
+        [np.sin(theta), np.cos(theta)]
+    ])
+    point = np.matmul(R, point)
+    return point
     ### END YOUR CODE
 
 
@@ -139,9 +166,23 @@ def rotate_image(input_image, theta):
 
     # 1. Create an output image with the same shape as the input
     output_image = np.zeros_like(input_image)
+    output_rows, output_cols, channels = output_image.shape
 
     ## YOUR CODE HERE
-    pass
+    '''
+    p' = R(p-c) + c
+    p = R_-1(p'-c) + c
+    '''
+    center = np.array([int(input_rows/2), int(input_cols/2)])
+    for x in range(output_rows):
+        for y in range(output_cols):
+            pp = np.array([x, y])
+            p = rotate2d(pp-center, theta) + center
+
+            # check valid pixel
+            if (0 <= p[0] <= output_rows and 0 <= p[1] <= output_cols):
+                output_image[x][y] = input_image[int(p[0])][int(p[1])] 
+            else: output_image[x][y] = [0, 0, 0]
     ### END YOUR CODE
 
     # 3. Return the output image
