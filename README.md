@@ -14,7 +14,7 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
     - resize image
     - Rotating 2D coordinates
     - Rotate image 
-![](fall_2020\hw0_release\image1.jpg)   ![](fall_2020\hw0_release\16_16_baboon.png) ![](fall_2020\hw0_release\rotated_output.png)
+![](https://github.com/RRRChangeche/Stanford_CS131_2020/blob/main/fall_2020/hw0_release/image1.jpg)   ![](fall_2020/hw0_release/16_16_baboon.png) ![](https://github.com/RRRChangeche/Stanford_CS131_2020/blob/784faac58b59ea4fc95fa23073eec56d262d930b/fall_2020/hw0_release/rotated_output.png)
 
 ## hw1: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/fall_2020/hw1_release)
 * Convolution
