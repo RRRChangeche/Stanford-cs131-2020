@@ -5,7 +5,7 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 * Environment: python3.6+
 * Requirements: run     "pip install -r requirements.txt"
 
-### hw0: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/fall_2020/hw0_release)
+## hw0: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/fall_2020/hw0_release)
 * Linear Algebra and Numpy review 
 * Image manipulation
     - laod image 
@@ -14,3 +14,8 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
     - resize image
     - Rotating 2D coordinates
     - Rotate image 
+![](fall_2020\hw0_release\image1.jpg)   ![](fall_2020\hw0_release\16_16_baboon.png) ![](fall_2020\hw0_release\rotated_output.png)
+
+## hw1: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/fall_2020/hw1_release)
+* Convolution
+
