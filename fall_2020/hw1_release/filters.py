@@ -29,7 +29,17 @@ def conv_nested(image, kernel):
     out = np.zeros((Hi, Wi))
 
     ### YOUR CODE HERE
-    pass
+    # flip kernel
+    kernel = np.fliplr(np.flipud(kernel))
+
+    # Convolution
+    for y in range(Hi):
+        for x in range(Wi):
+            for i in range(Hk):
+                for j in range(Wk):
+                    # change kernel index to -2,-1,0,1,2...
+                    if y+i-Hk//2>=0 and y+i-Hk//2<Hi and x+j-Wk//2>=0 and x+j-Wk//2<Wi:
+                        out[y][x] += kernel[i][j] * image[y+i-Hk//2][x+j-Wk//2]
     ### END YOUR CODE
 
     return out
@@ -56,7 +66,8 @@ def zero_pad(image, pad_height, pad_width):
     out = None
 
     ### YOUR CODE HERE
-    pass
+    out = np.zeros((H+2*pad_height, W+2*pad_width))
+    out[pad_height:-pad_height, pad_width:-pad_width] = image
     ### END YOUR CODE
     return out
 
@@ -85,7 +96,11 @@ def conv_fast(image, kernel):
     out = np.zeros((Hi, Wi))
 
     ### YOUR CODE HERE
-    pass
+    kernel = np.fliplr(np.flipud(kernel))
+    image_pad = zero_pad(image, Hk//2, Wk//2)
+    for y in range(Hi):
+        for x in range(Wi):
+            out[y][x] = np.sum(image_pad[y:y+Hk, x:x+Wk] * kernel)
     ### END YOUR CODE
 
     return out
@@ -105,7 +120,8 @@ def cross_correlation(f, g):
 
     out = None
     ### YOUR CODE HERE
-    pass
+    g = np.fliplr(np.flipud(g))
+    out = conv_fast(f, g)
     ### END YOUR CODE
 
     return out
@@ -127,7 +143,9 @@ def zero_mean_cross_correlation(f, g):
 
     out = None
     ### YOUR CODE HERE
-    pass
+    g -= np.mean(g)
+    g = np.fliplr(np.flipud(g))
+    out = conv_fast(f, g)
     ### END YOUR CODE
 
     return out
@@ -151,7 +169,19 @@ def normalized_cross_correlation(f, g):
 
     out = None
     ### YOUR CODE HERE
-    pass
+    # normalized g
+    g = (g-np.mean(g))/np.std(g)
+
+    Hi, Wi = f.shape
+    Hg, Wg = g.shape
+    f_pad = zero_pad(f, Hg//2, Wg//2)
+    out = np.zeros(f.shape)
+
+    for y in range(Hi):
+        for x in range(Wi):
+            patch = f_pad[y:y+Hg, x:x+Wg]
+            patch = (patch - np.mean(patch))/np.std(patch)
+            out[y][x] = np.sum(g * patch)
     ### END YOUR CODE
 
     return out
