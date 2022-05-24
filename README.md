@@ -34,20 +34,19 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
       1. zero padding
       2. flip kernel vertically and horizontally
       3. compute weighted sum
-![1_4](fall_2020/hw1_release/1_4_output.png)
-![1_4_3](fall_2020/hw1_release/1_4_3_output.png)
 
 > What I've learned?
 >
 > * Optimize convolution implementaion by using numpy >>(conv_fast).
 > * It's about up to 15x faster than naive implementation(conv_nested) in this case.
 
+![1_4](fall_2020/hw1_release/1_4_output.png)
+![1_4_3](fall_2020/hw1_release/1_4_3_output.png)
+
 * Cross-correlation
   * Template matching
   * Zero-mean cross-correlation
   * Normalized Cross-correlation
-![2_1](fall_2020/hw1_release/2_1_output.png)
-![1_4_3](fall_2020/hw1_release/2_2_output.png)
 
 > What I've learned?
 >
@@ -55,16 +54,19 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 >
 > * Imple,ent template matching by normalized Cross-correlation algorithm to search the target pattern in the source image.
 
+![2_1](fall_2020/hw1_release/2_1_output.png)
+![1_4_3](fall_2020/hw1_release/2_2_output.png)
+
 * Separable Filter
   * Theory
   * Complexity comparison
-
-![3_1](fall_2020/hw1_release/3_1_output.png)
 
 > What I've learned?
 >
 > * 2D separable convolution is equivalent to two 1D convolutions.
 >
 > * Optimize 2D convolution by doing two 1D convolutoins.
-> 
+>
 > * It's about 2x faster by using separable filter in this case.
+
+![3_1](fall_2020/hw1_release/3_1_output.png)
