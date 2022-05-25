@@ -18,14 +18,9 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
   * Rotating 2D coordinates
   * Rotate image
   
-<p float="left">
-  <img src="fall_2020/hw0_release/image1.jpg" width="100" />
-  <img src="fall_2020/hw0_release/16_16_baboon.jpg" width="100" /> 
-  <img src="fall_2020/hw0_release/rotated_output.jpg" width="100" />
-</p>
-<!-- ![0_1](fall_2020/hw0_release/image1.jpg)
-![0_2](fall_2020/hw0_release/16_16_baboon.png)
-![0_3](fall_2020/hw0_release/rotated_output.png) -->
+| load image | blur | rotate |
+| ------------- | ------------- | ------------- |
+| ![0_1](fall_2020/hw0_release/image1.jpg)  | ![0_2](fall_2020/hw0_release/16_16_baboon.png)  | ![0_3](fall_2020/hw0_release/rotated_output.png)  |
 
 ## hw1: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/fall_2020/hw1_release)
 
