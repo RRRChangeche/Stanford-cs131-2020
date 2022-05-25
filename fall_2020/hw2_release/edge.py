@@ -36,7 +36,10 @@ def conv(image, kernel):
     padded = np.pad(image, pad_width, mode='edge')
 
     ### YOUR CODE HERE
-    pass
+    for i in range(Hi):
+        for j in range(Wi):
+            patch = padded[i:i+Hk, j:j+Wk]
+            out[i][j] = np.sum(patch * kernel)
     ### END YOUR CODE
 
     return out
@@ -61,7 +64,10 @@ def gaussian_kernel(size, sigma):
     kernel = np.zeros((size, size))
 
     ### YOUR CODE HERE
-    pass
+    k = size//2
+    for i in range(kernel.shape[0]):
+        for j in range(kernel.shape[1]):
+            kernel[i][j] = np.exp(-((i-k)**2+(j-k)**2)/(2*(sigma**2)))/(2*np.pi*(sigma**2))
     ### END YOUR CODE
 
     return kernel
@@ -81,7 +87,8 @@ def partial_x(img):
     out = None
 
     ### YOUR CODE HERE
-    pass
+    kernel = np.array([[-0.5, 0, 0.5]])
+    out = conv(img, kernel)
     ### END YOUR CODE
 
     return out
@@ -101,7 +108,8 @@ def partial_y(img):
     out = None
 
     ### YOUR CODE HERE
-    pass
+    kernel = np.array([-0.5, 0, 0.5]).reshape(3,1)
+    out = conv(img, kernel)
     ### END YOUR CODE
 
     return out
@@ -125,11 +133,16 @@ def gradient(img):
     theta = np.zeros(img.shape)
 
     ### YOUR CODE HERE
-    pass
+    Gx = partial_x(img)
+    Gy = partial_y(img)
+    G = np.sqrt(Gx**2+Gy**2)
+    theta = np.rad2deg(np.arctan2(Gy, Gx))
+    theta = (theta+360.0)%360
+    # numpy.arctan return value in radian [-pi/2, pi/2]
+    # numpy.arctan2 return value in range [-pi, pi] https://zh.wikipedia.org/zh-tw/Atan2
     ### END YOUR CODE
 
     return G, theta
-
 
 def non_maximum_suppression(G, theta):
     """ Performs non-maximum suppression.
@@ -150,9 +163,30 @@ def non_maximum_suppression(G, theta):
     # Round the gradient direction to the nearest 45 degrees
     theta = np.floor((theta + 22.5) / 45) * 45
 
-    #print(G)
+    # print(G)
     ### BEGIN YOUR CODE
-    pass
+    theta %= 360
+    for i in range(1, H-1):
+        for j in range(1, W-1):
+            angle = theta[i][j]
+
+            # find neighbor pixels along the direction 
+            if angle == 0 or angle == 180: 
+                neighbors = [G[i, j-1], G[i, j+1]]
+            elif angle == 45 or angle == 225:
+                neighbors = [G[i+1, j+1], G[i-1, j-1]]
+            elif angle == 90 or angle == 270:
+                neighbors = [G[i-1, j], G[i+1, j]]
+            elif angle == 135 or angle == 315:
+                neighbors = [G[i+1, j-1], G[i-1, j+1]]
+            else:
+                raise RuntimeError(f"Theta value {angle} not in '{'0,45,90,135,180,225,270,315'}'")
+            
+            #  suppress non-maximum pixel
+            if G[i][j] >= np.max(neighbors):
+                out[i][j] = G[i][j]
+            else:
+                out[i][j] = 0
     ### END YOUR CODE
 
     return out
@@ -177,7 +211,9 @@ def double_thresholding(img, high, low):
     weak_edges = np.zeros(img.shape, dtype=np.bool)
 
     ### YOUR CODE HERE
-    pass
+    strong_edges = img > high
+    weak_edges = (img > low) & (img <= high)
+    # weak_edges = low < img <= high
     ### END YOUR CODE
 
     return strong_edges, weak_edges

@@ -54,8 +54,9 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 >
 > * Implement template matching by normalized Cross-correlation algorithm to search the target pattern in the source image.
 
-![2_1](fall_2020/hw1_release/2_1_output.png)
-![1_4_3](fall_2020/hw1_release/2_2_output.png)
+|![2_1](fall_2020/hw1_release/2_1_output.png) |
+|-|
+|![1_4_3](fall_2020/hw1_release/2_2_output.png) |
 
 * Separable Filter
   * Theory
@@ -130,3 +131,16 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
   3. Non-maximum suppression
   4. Double thresholding
   5. Edge tracking by hysterisis
+
+> What I've learned?
+>
+> * Implement Gaussian filter
+>
+> * Implement Gradient and calculate it's magnitude and direction of each pixel.
+>
+> * NMS流程
+>   * 先將方向以45度分為8等分 [0,45,90,135,180,225,270,315]
+>   * 在梯度方向和鄰近像素比較梯度大小
+>   * 如果像素在鄰近像素中是梯度最大, 則將像素留下
+>
+>
