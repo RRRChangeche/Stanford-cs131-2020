@@ -30,14 +30,14 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
   * prove Linearity
   * Implementation
     * conv_nested - using 4 for-loops
-    * conv_fast - using zero-pad and numpy
+    * conv_fast - using zero-pad and numpy dot product
       1. zero padding
       2. flip kernel vertically and horizontally
       3. compute weighted sum
 
 > What I've learned?
 >
-> * Optimize convolution implementaion by using numpy >>(conv_fast).
+> * Optimize convolution implementaion by using numpy(conv_fast).
 > * It's about up to 15x faster than naive implementation(conv_nested) in this case.
 
 ![1_4](fall_2020/hw1_release/1_4_output.png)
@@ -52,7 +52,7 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 >
 > * The `zero_mean_cross_correlation` is not robust to change in lighting condition.
 >
-> * Imple,ent template matching by normalized Cross-correlation algorithm to search the target pattern in the source image.
+> * Implement template matching by normalized Cross-correlation algorithm to search the target pattern in the source image.
 
 ![2_1](fall_2020/hw1_release/2_1_output.png)
 ![1_4_3](fall_2020/hw1_release/2_2_output.png)
@@ -70,3 +70,54 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 > * It's about 2x faster by using separable filter in this case.
 
 ![3_1](fall_2020/hw1_release/3_1_output.png)
+
+## Recitation 4 - Advanced Numpy Tutorial: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/fall_2020/hw1_release)
+
+* Creating numpy array
+* Array Attributes
+* Accessing elements
+* Matrix operations
+  * Element-wise operation - all arithmetic operations are applied to a matrix element-wise
+    * +, -, *, /
+    * sqrt/ power
+  * Axis-based operations
+    * mean
+    * std
+    * sum
+  * Some other useful manipulations
+    * concatenate
+    * tranpose
+    * linalg.inv - to invert a matrix 
+* Numpy for linear algebra
+  * Dot product - np.dot - return scalar
+  * np.matmul/ @
+* Numpy arrays, references, and *copies*
+  * import copy/ copy.copy() and copy.deepcopy()
+  * np.array.copy()
+* Sorting
+  * np.sort - return sorted array
+  * np.argsort - return sorted indices
+* Reshaping 
+* Broadcsting
+* Using boolean masks
+  * boolean masks
+  * np.where
+* Linear Algebra
+  * np.linalg.slove
+  * np.linalg.lstsq
+  * $\theta = (X^T X)^{-1} X^T y$
+* Vectorize equations 
+
+> What I've learned?
+>
+> * All arithmetic operations are applied to a matrix element-wise.
+>
+> * Numpy operation is way faster than list.
+>
+> * Reference of numpy array, point to the same object. Use `copy` to fix this. 
+>
+> * Be aware of `copy` and `deepcopy`.
+>
+> * Broadcasting - Two dimensions are compatible when `they are equal`, or `one of them is 1`. [(details)](https://numpy.org/doc/stable/user/basics.broadcasting.html)
+> ex: c = a*b, when a's shape is (1,3)/ b's shape is (3,1), then c's shape is (3,3) because of broadcasting  operation.
+>
