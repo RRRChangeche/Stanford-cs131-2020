@@ -18,9 +18,14 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
   * Rotating 2D coordinates
   * Rotate image
   
-![0_1](fall_2020/hw0_release/image1.jpg)
+<p float="left">
+  <img src="fall_2020/hw0_release/image1.jpg" width="100" />
+  <img src="fall_2020/hw0_release/16_16_baboon.jpg" width="100" /> 
+  <img src="fall_2020/hw0_release/rotated_output.jpg" width="100" />
+</p>
+<!-- ![0_1](fall_2020/hw0_release/image1.jpg)
 ![0_2](fall_2020/hw0_release/16_16_baboon.png)
-![0_3](fall_2020/hw0_release/rotated_output.png)
+![0_3](fall_2020/hw0_release/rotated_output.png) -->
 
 ## hw1: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/fall_2020/hw1_release)
 
@@ -121,3 +126,12 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 > * Broadcasting - Two dimensions are compatible when `they are equal`, or `one of them is 1`. [(details)](https://numpy.org/doc/stable/user/basics.broadcasting.html)
 > ex: c = a*b, when a's shape is (1,3)/ b's shape is (3,1), then c's shape is (3,3) because of broadcasting  operation.
 >
+
+## hw2: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/fall_2020/hw2_release)
+
+* Canny edge detector
+  1. Smoothing
+  2. Finding gradients
+  3. Non-maximum suppression
+  4. Double thresholding
+  5. Edge tracking by hysterisis
