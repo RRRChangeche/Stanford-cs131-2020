@@ -1,22 +1,23 @@
 Reference
-05_03_ransac_harris.pdf
-03_01_filters_lin_sys.pdf
-02_02_images_transform.pdf
-02_01_images_img_sample.pdf
-01_logistics.pdf
-05_01_ransac_ransac.pdf
-04_06_edges_hough.pdf
-04_05_edges_canny.pdf
-04_03_edges_simple.pdf
-04_02_edges_img_grad.pdf
-04_01_edges_overview.pdf
-03_02_filters_conv_corr.pdf
-05_02_ransac_local_inv_feat.pdf
-04_04_edges_sobel.pdf
-01_02_introduction_CV_application.pdf
-01_01_introduction_what_is_CV.pdf
-06_03_DoG_SIFT_HoG.pdf
-06_02_DoG_SIFT_SIFT.pdf
-06_01_DoG_SIFT_DoG.pdf
+# 05_03_ransac_harris.pdf
+# 03_01_filters_lin_sys.pdf
+# 02_02_images_transform.pdf
+# 02_01_images_img_sample.pdf
+# 01_logistics.pdf
+# 05_01_ransac_ransac.pdf
+# 04_06_edges_hough.pdf
+# 04_05_edges_canny.pdf
+# 04_03_edges_simple.pdf
+# 04_02_edges_img_grad.pdf
+# 04_01_edges_overview.pdf
+# 03_02_filters_conv_corr.pdf
+# 05_02_ransac_local_inv_feat.pdf
+# 04_04_edges_sobel.pdf
+# 01_02_introduction_CV_application.pdf
+# 01_01_introduction_what_is_CV.pdf
+# 06_03_DoG_SIFT_HoG.pdf
+# 06_02_DoG_SIFT_SIFT.pdf
+# 06_01_DoG_SIFT_DoG.pdf
 fall_2020/hw6_release/list_landmarks_align_celeba.txt
 *.pyc
+*pdf

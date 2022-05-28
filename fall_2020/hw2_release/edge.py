@@ -7,6 +7,8 @@ Last modified: 10/18/2017
 Python Version: 3.5+
 """
 
+import queue
+from unittest.mock import patch
 import numpy as np
 
 def conv(image, kernel):
@@ -264,15 +266,49 @@ def link_edges(strong_edges, weak_edges):
 
     H, W = strong_edges.shape
     indices = np.stack(np.nonzero(strong_edges)).T
-    edges = np.zeros((H, W), dtype=np.bool)
+    # edges = np.zeros((H, W), dtype=np.bool)
 
     # Make new instances of arguments to leave the original
     # references intact
     weak_edges = np.copy(weak_edges)
     edges = np.copy(strong_edges)
+    visited = np.zeros_like(edges)
 
     ### YOUR CODE HERE
-    pass
+    # using BFS to search all linked weak edges near to strong edges
+    # - loop all strong indices
+    # - find neibor weak edges using BFS
+    # - let edges[y][x] = weak_edges[y][x]
+
+    for indice in indices:
+        y, x = indice
+        linked_edges = []
+        
+        # first layer of meeting strong pixel 
+        neighbors = get_neighbors(y, x, H, W)
+        for y, x in neighbors:
+            # if visited, then skip
+            if visited[y][x]: continue
+            visited[y][x] = 1
+            # if neighbor pixel > 0, then mark it and add to linked_edges
+            if weak_edges[y][x] > 0: 
+                edges[y][x] = weak_edges[y][x]
+                linked_edges.append((y,x))
+            
+        # BFS
+        while linked_edges:
+            y, x = linked_edges[0]
+            linked_edges.pop(0)
+            neighbors = get_neighbors(y, x, H, W)
+            for y,x in neighbors:
+                # if visited, then skip
+                if visited[y][x]: continue
+                visited[y][x] = 1
+                # if neighbor pixel > 0, then mark it and add to linked_edges
+                if weak_edges[y][x] > 0: 
+                    edges[y][x] = weak_edges[y][x]
+                    linked_edges.append((y,x))
+
     ### END YOUR CODE
 
     return edges
@@ -290,7 +326,13 @@ def canny(img, kernel_size=5, sigma=1.4, high=20, low=15):
         edge: numpy array of shape(H, W).
     """
     ### YOUR CODE HERE
-    pass
+    edge = np.zeros_like(img)
+    kernel = gaussian_kernel(5,sigma)
+    smooth = conv(img, kernel)
+    G, theta = gradient(smooth)
+    nms = non_maximum_suppression(G, theta)
+    strong_edges, weak_edges = double_thresholding(nms, high, low)
+    edge = link_edges(strong_edges, weak_edges)
     ### END YOUR CODE
 
     return edge
@@ -313,7 +355,7 @@ def hough_transform(img):
     """
     # Set rho and theta ranges
     W, H = img.shape
-    diag_len = int(np.ceil(np.sqrt(W * W + H * H)))
+    diag_len = int(np.ceil(np.sqrt(W * W + H * H))) # = maximum magnitude of (rho) = (X^2+Y^)^0.5
     rhos = np.linspace(-diag_len, diag_len, diag_len * 2 + 1)
     thetas = np.deg2rad(np.arange(-90.0, 90.0))
 
@@ -326,11 +368,15 @@ def hough_transform(img):
     accumulator = np.zeros((2 * diag_len + 1, num_thetas), dtype=np.uint64)
     ys, xs = np.nonzero(img)
 
+    # print("diag_len", diag_len, "accumulator.shape", accumulator.shape)
     # Transform each point (x, y) in image
     # Find rho corresponding to values in thetas
     # and increment the accumulator in the corresponding coordiate.
     ### YOUR CODE HERE
-    pass
+    for py, px in zip(ys, xs):
+        for t in range(num_thetas):
+            rho = int(px*cos_t[t] + py*sin_t[t])-(-diag_len)    # rhos range {-diag_len, diag_len}, but accumulator yRange {0, 2*diag_len+1}
+            accumulator[rho, t] += 1
     ### END YOUR CODE
 
     return accumulator, rhos, thetas

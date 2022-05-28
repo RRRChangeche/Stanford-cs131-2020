@@ -107,7 +107,7 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
   * np.linalg.slove
   * np.linalg.lstsq
   * $\theta = (X^T X)^{-1} X^T y$
-* Vectorize equations 
+* Vectorize equations
 
 > What I've learned?
 >
@@ -131,6 +131,29 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
   3. Non-maximum suppression
   4. Double thresholding
   5. Edge tracking by hysterisis
+  6. Optimize parameters
+* Lane detection
+  * Edge detection
+  * Extracting Region of Interest (ROI)
+  * Fitting lines using Hough Transform
+
+|Smooth|
+|-|
+|![1_1](fall_2020/hw2_release/1_1_output.png) |
+|**Grdient of x and y**|
+|![1_2](fall_2020/hw2_release/1_2_output.png) |
+|**NMS**|
+|![1_3](fall_2020/hw2_release/1_3_output.png) |
+|**Double Thresholding**|
+|![1_4](fall_2020/hw2_release/1_4_output.png) |
+|**Edge tracking by hysterisis**|
+|![1_5](fall_2020/hw2_release/1_5_output.png) |
+|**Edge detection**|
+|![2_1](fall_2020/hw2_release/2_1_output.png) |
+|**ROI**|
+|![2_2](fall_2020/hw2_release/2_2_output.png) |
+|**Hough transform**|
+|![2_3](fall_2020/hw2_release/2_3_output.png) |
 
 > What I've learned?
 >
@@ -143,4 +166,11 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 >   * 在梯度方向和鄰近像素比較梯度大小
 >   * 如果像素在鄰近像素中是梯度最大, 則將像素留下
 >
->
+> * Hough Transform steps:
+>   * Find edges using Canny edge detector
+>   * Map edge points to Hough Space (r-theta coordinate)
+>   * Store mapped points in accumulator
+>   * Interpretate the accumulator to yield lines of infinite length
+>   * Converse infinite lines to finite lines
+>   * [Reference](https://web.ipac.caltech.edu/staff/fmasci/home/astro_refs/HoughTrans_lines_09.pdf)
+>  
