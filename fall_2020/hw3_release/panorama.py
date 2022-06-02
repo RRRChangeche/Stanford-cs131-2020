@@ -53,7 +53,26 @@ def harris_corners(img, window_size=3, k=0.04):
     dy = filters.sobel_h(img)
 
     ### YOUR CODE HERE
-    pass
+    # 2. Compute (I_xx, I_yy, I_xy) of an image
+    Ixx = dx * dx
+    Iyy = dy * dy
+    Ixy = dx * dy
+
+    # 3. Apply smooth to (Ixx, Iyy, Ixy) get (Sxx, Syy, Sxy)
+    Sxx = convolve(Ixx, window)
+    Syy = convolve(Iyy, window)
+    Sxy = convolve(Ixy, window)
+
+    for y in range(H):
+        for x in range(W):
+            # 4. Compute M at each pixel
+            M = np.array([
+                [Sxx[y,x], Sxy[y,x]],
+                [Sxy[y,x], Syy[y,x]]
+            ])
+
+            # 5. Compute R at each pixel by getting eigenvalue of M
+            response[y, x] = np.linalg.det(M) - k*np.trace(M)**2
     ### END YOUR CODE
 
     return response
@@ -79,7 +98,9 @@ def simple_descriptor(patch):
     """
     feature = []
     ### YOUR CODE HERE
-    pass
+    feature = patch.flatten()
+    feature -= np.mean(feature)
+    feature /= np.std(feature) if np.std(feature)!=0 else 1
     ### END YOUR CODE
     return feature
 
@@ -131,10 +152,17 @@ def match_descriptors(desc1, desc2, threshold=0.5):
     matches = []
 
     M = desc1.shape[0]
-    dists = cdist(desc1, desc2)
+    dists = cdist(desc1, desc2, 'euclidean')
 
     ### YOUR CODE HERE
-    pass
+
+    # sorted each row of pairs
+    for i in range(M):
+        min1, min2 = np.argsort(dists[i])[0:2]
+        if dists[i][min1]/dists[i][min2] < threshold:
+            matches.append([i, min1])
+
+    matches = np.array(matches)
     ### END YOUR CODE
 
     return matches
@@ -167,7 +195,7 @@ def fit_affine_matrix(p1, p2):
     p2 = pad(p2)
 
     ### YOUR CODE HERE
-    pass
+    H = np.linalg.lstsq(p2, p1, rcond=None)[0]
     ### END YOUR CODE
 
     # Sometimes numerical issues cause least-squares to produce the last

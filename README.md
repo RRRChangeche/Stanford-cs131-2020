@@ -173,4 +173,7 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 >   * Interpretate the accumulator to yield lines of infinite length
 >   * Converse infinite lines to finite lines
 >   * [Reference](https://web.ipac.caltech.edu/staff/fmasci/home/astro_refs/HoughTrans_lines_09.pdf)
->  
+
+## hw3: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/fall_2020/hw3_release)
+
+
