@@ -191,6 +191,19 @@ def fit_affine_matrix(p1, p2):
 
     assert (p1.shape[0] == p2.shape[0]),\
         'Different number of points in p1 and p2'
+        
+    # add pad to p1/p2
+    # p1 = [
+    #     [x1, y1],
+    #     [x2, y2],
+    #     ...
+    # ] 
+    # ---> pad
+    # p1' = [
+    #     [x1, y1, 1],
+    #     [x2, y2, 1],
+    #     ...
+    # ]
     p1 = pad(p1)
     p2 = pad(p2)
 
@@ -251,6 +264,8 @@ def ransac(keypoints1, keypoints2, matches, n_iters=200, threshold=20):
 
     max_inliers = np.zeros(N, dtype=bool)
     n_inliers = 0
+    H_max = None
+    H = None
 
     # RANSAC iteration start
     
@@ -266,7 +281,30 @@ def ransac(keypoints1, keypoints2, matches, n_iters=200, threshold=20):
     '''
 
     ### YOUR CODE HERE
-    pass
+    # RANSAC iteration for given 'n_iters' times
+    for _ in range(n_iters):
+        # 1. Select random set of matches
+        np.random.shuffle(matches)
+        samples = matches[:n_samples]
+        sample1 = keypoints1[samples[:,0]]
+        sample2 = keypoints2[samples[:,1]]
+
+        # 2. Compute affine transformation matrix
+        H = fit_affine_matrix(sample1, sample2)
+
+        # 3. Compute inliers via Euclidean distancea
+        dists = np.linalg.norm(matched2.dot(H)-matched1, axis=1, ord=2) # https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html
+
+        # 4. Keep the largest set of inliers
+        mask_inliners = dists < threshold
+        n_tmp = np.count_nonzero(mask_inliners)
+        if n_tmp > n_inliers:
+            n_inliers = n_tmp
+            max_inliers = mask_inliners.copy()
+
+    # 5. Re-compute least-squares estimate on all of the inliers
+    H = fit_affine_matrix(keypoints1[orig_matches[:,0]][max_inliers], keypoints2[orig_matches[:,1]][max_inliers])
+
     ### END YOUR CODE
     return H, orig_matches[max_inliers]
 
