@@ -136,16 +136,16 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 
 > What I've learned?
 >
-> * Implement Gaussian filter
+> * **Implement Gaussian filter**
 >
-> * Implement Gradient and calculate it's magnitude and direction of each pixel.
+> * **Implement Gradient and calculate it's magnitude and direction of each pixel.**
 >
-> * NMS流程
+> * **NMS流程**
 >   * 先將方向以45度分為8等分 [0,45,90,135,180,225,270,315]
 >   * 在梯度方向和鄰近像素比較梯度大小
 >   * 如果像素在鄰近像素中是梯度最大, 則將像素留下
 >
-> * Hough Transform steps:
+> * **Hough Transform steps:**
 >   * Find edges using Canny edge detector
 >   * Map edge points to Hough Space (r-theta coordinate)
 >   * Store mapped points in accumulator
@@ -183,66 +183,58 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 
 > What I've learned?
 >
-> * Harris corner detector steps:
+> * **Harris corner detector**
+>   * A method to get keypoints of the image.
+>   * Steps:
+>   1. Compute Ix and Iy derivatives of an image.
+>   2. Compute product of Ix^2/ Iy^2/ IxIy at each pixel
+>   3. Apply Gaussian smooth to 2. to get Sxx/ Syy/ Sxy
+>   4. Compute matrix M at each pixel and eigen value of M
+>   5. Compute response value R at each pixel, where R = Det(M)-k(Trace(M)^2)
+>   6. Use function `corner_peaks` from `skimage.feature` to get local maxima of response map by performing NMS and **localize keypoints**
 >
-> 1. Compute Ix and Iy derivatives of an image.
-> 2. Compute product of Ix^2/ Iy^2/ IxIy at each pixel
-> 3. Apply Gaussian smooth to 2. to get Sxx/ Syy/ Sxy
-> 4. Compute matrix M at each pixel and eigen value of M
-> 5. Compute response value R at each pixel, where R = =Det(M)-k(Trace(M)^2)
-
-Describing and Matching Keypoints
-
-- 建立描述子 Creating descriptors
-	- 將每一個keypoint給定一個patch範圍
-	- normalize patch並將patch轉為一維矩陣
-- 配對描述子 Matching descriptors
-	- 使用歐式距離比較兩張圖的每一個描述子 (use `scipy.cdist`)
-	- 留下(距離最小的配對點/ 距離第二小的配對點) 比值小於閥值的最小配對點
-
-
-Transformation Estimation 計算轉置矩陣
-
-- 使用least square找出affine transformation matrix H 使的 p2*H = p1 (use `np.linalg.lstsq`)
-
-
-RANSAC 
-
-步驟:
-1. 給定 
-   - n_iters: 重複疊代次數
-   - threshold: 判斷inliers閥值
-2. 隨機選取一組配對點 Select random set of matches
-3. 計算仿射變換矩陣 使p2*H = p1 Compute affine transformation matrix (use `np.linalg.lstsq`)
-4. 以歐式距離根據給定threshold判斷inliers數量 Compute inliers via Euclidean distance (use `np.linalg.norm(...ord=2)`)
-5. 將有最多inliers的模型保存起來 Keep the largest set of inliers
-6. 使用最多的那些inliers 重新計算一次Least-squares Re-compute least-squares estimate on all of the inliers
-
-
-Histogram of Oriented Gradients (HOG)
-
-步驟:
-- Compute the gradient image in x and y directions
-	- Use the sobel filter provided by skimage.filters
-- Compute gradient histograms
-	- Divide image into cells, and calculate histogram of gradients in each cell
-- Flatten block of histograms into feature vector
-- Normalize flattened block by L2 norm
-
-
-Better Image Merging - Linear Blending
-
-- Define left and right margins for blending to occur between
-- Define a weight matrix for image 1 such that:
-	- From the left of the output space to the left margin the weight is 1
-	- From the left margin to the right margin, the weight linearly decrements from 1 to 0
-- Define a weight matrix for image 2 such that:
-	- From the right of the output space to the right margin the weight is 1
-	- From the left margin to the right margin, the weight linearly increments from 0 to 1
-- Apply the weight matrices to their corresponding images
-- Combine the images
-
-
-Stitching Multiple Images
-
-- Combine the effects of multiple transformation matrices
+> * **Describing and Matching Keypoints**
+>   * Creating descriptors
+>     * Give each keypoints a patch
+>     * Normalize patch and then flattening into a 1D array
+>   * Matching descriptors
+>	    * Calculate Euclidean distance between all pairs of descriptors form image1 to image2 (use `scipy.spatial.distance.cdist(desc1, desc2, 'euclidean')`)
+>	    * Store 'match descriptors', if (first-closest pairs/ second-closest pairs) < threshold, then first-closest pairs is match
+>
+> * **Transformation Estimation**
+>   * Use least square to calculate affine transformation matrix H letting p2*H = p1 (use `np.linalg.lstsq`)
+>
+> * **RANSAC**
+>   * Steps:
+>   1. Given parameters: 
+>     - n_iters: 重複疊代次數
+>     - threshold: 判斷inliers閥值
+>   2. 隨機選取一組配對點 Select random set of matches
+>   3. 計算仿射變換矩陣 使p2*H = p1 Compute affine transformation matrix (use `np.linalg.lstsq`)
+>   4. 以歐式距離根據給定threshold判斷inliers數量 Compute inliers via Euclidean distance (use `np.linalg.norm(...ord=2)`)
+>   5. 將有最多inliers的模型保存起來 Keep the largest set of inliers
+>   6. 使用最多的那些inliers 重新計算一次Least-squares Re-compute least-squares estimate on all of the inliers
+>
+> * **Histogram of Oriented Gradients (HOG)**
+>   * A method to describe keypoint
+>   * Steps:
+>   1. Compute the gradient image in x and y directions
+>   	 - Use the sobel filter provided by skimage.filters
+>   2. Compute gradient histograms
+>      - Divide image into cells, and calculate histogram of gradients in each cell
+>   3. Flatten block of histograms into feature vector
+>   4. Normalize flattened block by L2 norm
+>
+> * **Better Image Merging - Linear Blending**
+>   - Define left and right margins for blending to occur between
+>   - Define a weight matrix for image 1 such that:
+> 	  - From the left of the output space to the left margin the weight is 1
+> 	  - From the left margin to the right margin, the weight linearly decrements from 1 to 0
+>   - Define a weight matrix for image 2 such that:
+> 	  - From the right of the output space to the right margin the weight is 1
+> 	  - From the left margin to the right margin, the weight linearly increments from 0 to 1
+>   - Apply the weight matrices to their corresponding images
+>   - Combine the images
+>
+> * **Stitching Multiple Images**
+>   - Combine the effects of multiple transformation matrices
