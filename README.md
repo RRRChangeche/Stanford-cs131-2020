@@ -35,28 +35,10 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
       2. flip kernel vertically and horizontally
       3. compute weighted sum
 
-> What I've learned?
->
-> * Optimize convolution implementaion by using numpy(conv_fast).
-> * It's about up to 15x faster than naive implementation(conv_nested) in this case.
-
-![1_4](fall_2020/hw1_release/1_4_output.png)
-![1_4_3](fall_2020/hw1_release/1_4_3_output.png)
-
 * Cross-correlation
   * Template matching
   * Zero-mean cross-correlation
-  * Normalized Cross-correlation
-
-> What I've learned?
->
-> * The `zero_mean_cross_correlation` is not robust to change in lighting condition.
->
-> * Implement template matching by normalized Cross-correlation algorithm to search the target pattern in the source image.
-
-|![2_1](fall_2020/hw1_release/2_1_output.png) |
-|-|
-|![1_4_3](fall_2020/hw1_release/2_2_output.png) |
+  * Normalized cross-correlation
 
 * Separable Filter
   * Theory
@@ -64,12 +46,27 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 
 > What I've learned?
 >
+> * Optimize convolution implementaion by using numpy(conv_fast).
+> * It's about up to 15x faster than naive implementation(conv_nested) in this case.
+>
+> * The `Zero-mean Cross-Correlation` is not robust to change in lighting condition.
+>
+> * Implement template matching by `Normalized Cross-Correlation` algorithm to search the target pattern in the source image.
+>
 > * 2D separable convolution is equivalent to two 1D convolutions.
 >
 > * Optimize 2D convolution by doing two 1D convolutoins.
 >
 > * It's about 2x faster by using separable filter in this case.
 
+|**Convolution**|
+|-|
+|![1_4](fall_2020/hw1_release/1_4_output.png)|
+|**Zero-mean cross-correlation**|
+|![2_1](fall_2020/hw1_release/2_1_output.png) |
+|**Normalized cross-correlation**|
+|![1_4_3](fall_2020/hw1_release/2_2_output.png) |
+|**Normal V.S. Separable convolution**|
 ![3_1](fall_2020/hw1_release/3_1_output.png)
 
 ## Recitation 4 - Advanced Numpy Tutorial: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/fall_2020/hw1_release)
@@ -137,24 +134,6 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
   * Extracting Region of Interest (ROI)
   * Fitting lines using Hough Transform
 
-|Smooth|
-|-|
-|![1_1](fall_2020/hw2_release/1_1_output.png) |
-|**Grdient of x and y**|
-|![1_2](fall_2020/hw2_release/1_2_output.png) |
-|**NMS**|
-|![1_3](fall_2020/hw2_release/1_3_output.png) |
-|**Double Thresholding**|
-|![1_4](fall_2020/hw2_release/1_4_output.png) |
-|**Edge tracking by hysterisis**|
-|![1_5](fall_2020/hw2_release/1_5_output.png) |
-|**Edge detection**|
-|![2_1](fall_2020/hw2_release/2_1_output.png) |
-|**ROI**|
-|![2_2](fall_2020/hw2_release/2_2_output.png) |
-|**Hough transform**|
-|![2_3](fall_2020/hw2_release/2_3_output.png) |
-
 > What I've learned?
 >
 > * Implement Gaussian filter
@@ -174,6 +153,96 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 >   * Converse infinite lines to finite lines
 >   * [Reference](https://web.ipac.caltech.edu/staff/fmasci/home/astro_refs/HoughTrans_lines_09.pdf)
 
+|Smooth|
+|-|
+|![1_1](fall_2020/hw2_release/1_1_output.png) |
+|**Grdient of x and y**|
+|![1_2](fall_2020/hw2_release/1_2_output.png) |
+|**NMS**|
+|![1_3](fall_2020/hw2_release/1_3_output.png) |
+|**Double Thresholding**|
+|![1_4](fall_2020/hw2_release/1_4_output.png) |
+|**Edge tracking by hysterisis**|
+|![1_5](fall_2020/hw2_release/1_5_output.png) |
+|**Edge detection**|
+|![2_1](fall_2020/hw2_release/2_1_output.png) |
+|**ROI**|
+|![2_2](fall_2020/hw2_release/2_2_output.png) |
+|**Hough transform**|
+|![2_3](fall_2020/hw2_release/2_3_output.png) |
+
 ## hw3: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/fall_2020/hw3_release)
 
+* Harris corner detector
+* Describing and Matching Keypoints
+* Transformation Estimation 計算轉置矩陣
+* RANSAC
+* Histogram of Oriented Gradients (HOG)
+* Better Image Merging - Linear Blending
+* Stitching Multiple Images
 
+> What I've learned?
+>
+> * Harris corner detector steps:
+>
+> 1. Compute Ix and Iy derivatives of an image.
+> 2. Compute product of Ix^2/ Iy^2/ IxIy at each pixel
+> 3. Apply Gaussian smooth to 2. to get Sxx/ Syy/ Sxy
+> 4. Compute matrix M at each pixel and eigen value of M
+> 5. Compute response value R at each pixel, where R = =Det(M)-k(Trace(M)^2)
+
+Describing and Matching Keypoints
+
+- 建立描述子 Creating descriptors
+	- 將每一個keypoint給定一個patch範圍
+	- normalize patch並將patch轉為一維矩陣
+- 配對描述子 Matching descriptors
+	- 使用歐式距離比較兩張圖的每一個描述子 (use `scipy.cdist`)
+	- 留下(距離最小的配對點/ 距離第二小的配對點) 比值小於閥值的最小配對點
+
+
+Transformation Estimation 計算轉置矩陣
+
+- 使用least square找出affine transformation matrix H 使的 p2*H = p1 (use `np.linalg.lstsq`)
+
+
+RANSAC 
+
+步驟:
+1. 給定 
+   - n_iters: 重複疊代次數
+   - threshold: 判斷inliers閥值
+2. 隨機選取一組配對點 Select random set of matches
+3. 計算仿射變換矩陣 使p2*H = p1 Compute affine transformation matrix (use `np.linalg.lstsq`)
+4. 以歐式距離根據給定threshold判斷inliers數量 Compute inliers via Euclidean distance (use `np.linalg.norm(...ord=2)`)
+5. 將有最多inliers的模型保存起來 Keep the largest set of inliers
+6. 使用最多的那些inliers 重新計算一次Least-squares Re-compute least-squares estimate on all of the inliers
+
+
+Histogram of Oriented Gradients (HOG)
+
+步驟:
+- Compute the gradient image in x and y directions
+	- Use the sobel filter provided by skimage.filters
+- Compute gradient histograms
+	- Divide image into cells, and calculate histogram of gradients in each cell
+- Flatten block of histograms into feature vector
+- Normalize flattened block by L2 norm
+
+
+Better Image Merging - Linear Blending
+
+- Define left and right margins for blending to occur between
+- Define a weight matrix for image 1 such that:
+	- From the left of the output space to the left margin the weight is 1
+	- From the left margin to the right margin, the weight linearly decrements from 1 to 0
+- Define a weight matrix for image 2 such that:
+	- From the right of the output space to the right margin the weight is 1
+	- From the left margin to the right margin, the weight linearly increments from 0 to 1
+- Apply the weight matrices to their corresponding images
+- Combine the images
+
+
+Stitching Multiple Images
+
+- Combine the effects of multiple transformation matrices

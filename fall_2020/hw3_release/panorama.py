@@ -7,6 +7,9 @@ Last modified: 09/27/2018
 Python Version: 3.5+
 """
 
+from tkinter import RIDGE
+from turtle import shape
+from matplotlib.pyplot import step, xlabel
 import numpy as np
 from skimage import filters
 from skimage.feature import corner_peaks
@@ -264,7 +267,6 @@ def ransac(keypoints1, keypoints2, matches, n_iters=200, threshold=20):
 
     max_inliers = np.zeros(N, dtype=bool)
     n_inliers = 0
-    H_max = None
     H = None
 
     # RANSAC iteration start
@@ -335,6 +337,7 @@ def hog_descriptor(patch, pixels_per_cell=(8,8)):
     n_bins = 9
     degrees_per_bin = 180 // n_bins
 
+    # 1. Compute the gradient image in x and y directions (already done for you)
     Gx = filters.sobel_v(patch)
     Gy = filters.sobel_h(patch)
 
@@ -349,13 +352,33 @@ def hog_descriptor(patch, pixels_per_cell=(8,8)):
     theta_cells = view_as_blocks(theta, block_shape=pixels_per_cell)
     rows = G_cells.shape[0]
     cols = G_cells.shape[1]
+    # print(G.shape)  # (16,16)
+    # print(G_cells.shape) # (2,2,8,8)
 
     # For each cell, keep track of gradient histrogram of size n_bins
     cells = np.zeros((rows, cols, n_bins))
 
     # Compute histogram per cell
     ### YOUR CODE HERE
-    pass
+
+    # 2. Compute gradient histograms for each cell
+    for i in range(rows):
+        for j in range(cols):
+            Gcell = G_cells[i][j]
+            for x in range(Gcell.shape[0]):
+                for y in range(Gcell.shape[1]):
+                    bin = int(theta_cells[i][j][x][y]//degrees_per_bin)%n_bins
+                    cells[i][j][bin] += G_cells[i][j][x][y]
+
+    # 3. Flatten block of histograms into a 1D feature vector
+    block = cells.flatten()
+
+    # 4. Normalize flattened block by L2 norm
+    block = block/np.linalg.norm(block)
+    
+    #    Normalization makes the descriptor more robust to lighting variations
+    #   Here, we treat the entire patch of histograms as our block
+
     ### YOUR CODE HERE
 
     return block
@@ -384,14 +407,37 @@ def linear_blend(img1_warped, img2_warped):
 
     # Find column of middle row where warped image 1 ends
     # This is where to end weight mask for warped image 1
-    right_margin = out_W - np.argmax(np.fliplr(img1_mask)[out_H//2, :].reshape(1, out_W), 1)[0]
-
+    # right_margin = out_W - np.argmax(np.fliplr(img1_mask)[out_H//2, :].reshape(1, out_W), 1)[0]
+    for x in range(out_W-1,-1,-1):
+        if np.any(img1_mask[:,x]): 
+            right_margin = x
+            break
+    
     # Find column of middle row where warped image 2 starts
     # This is where to start weight mask for warped image 2
-    left_margin = np.argmax(img2_mask[out_H//2, :].reshape(1, out_W), 1)[0]
+    # left_margin = np.argmax(img2_mask[out_H//2, :].reshape(1, out_W), 1)[0]
+    for x in range(out_W):
+        if np.any(img2_mask[:,x]): 
+            left_margin = x
+            break
 
     ### YOUR CODE HERE
-    pass
+    # 2. Define a weight matrices for img1_warped and img2_warped
+    #   np.linspace and np.tile functions will be useful
+    weight1 = np.ones_like(img1_warped)
+    weight2 = np.ones_like(img2_warped)
+    weight1[:, left_margin:right_margin] = np.tile(np.linspace(1,0,right_margin-left_margin), (weight1.shape[0],1))
+    weight2[:, left_margin:right_margin] = np.tile(np.linspace(0,1,right_margin-left_margin), (weight2.shape[0],1))
+    weight1[:,right_margin:] = 0
+    weight2[:,:left_margin] = 0
+
+    # 3. Apply the weight matrices to their corresponding images
+    img1_warped = img1_warped*img1_mask*weight1
+    img2_warped = img2_warped*img2_mask*weight2
+
+    # 4. Combine the images
+    merged = img1_warped+img2_warped
+
     ### END YOUR CODE
 
     return merged
@@ -432,7 +478,23 @@ def stitch_multiple_images(imgs, desc_func=simple_descriptor, patch_size=5):
         matches.append(mtchs)
 
     ### YOUR CODE HERE
-    pass
+    Hs = [np.eye(3)]
+    for i, match in enumerate(matches):
+        H, robust_matches = ransac(keypoints[i], keypoints[i+1], match, threshold=1)
+        Hs.append(H)
+    
+    # combine the effects of multiple transformation matrices.
+    for i in range(1, len(Hs)):
+        Hs[i] = Hs[i].dot(Hs[i-1])
+
+    output_shape, offset = get_output_space(imgs[0], imgs[1:], Hs[1:])
+    for i, img in enumerate(imgs):
+        img_warped = warp_image(img, Hs[i], output_shape, offset)
+        img_mask = (img_warped != -1) # Mask == 1 inside the image
+        img_warped[~img_mask] = 0     # Return background values to 0
+
+        if i==0: panorama = img_warped
+        else: panorama = linear_blend(panorama, img_warped)
     ### END YOUR CODE
 
     return panorama
