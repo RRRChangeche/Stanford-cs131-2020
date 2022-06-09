@@ -219,25 +219,25 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 >   * A method to describe keypoint
 >   * Steps:
 >   1. Compute the gradient image in x and y directions
->   	 - Use the sobel filter provided by skimage.filters
+>      * Use the sobel filter provided by skimage.filters
 >   2. Compute gradient histograms
->      - Divide image into cells, and calculate histogram of gradients in each cell
+>      * Divide image into cells, and calculate histogram of gradients in each cell
 >   3. Flatten block of histograms into feature vector
 >   4. Normalize flattened block by L2 norm
 >
 > * **Better Image Merging - Linear Blending**
->   - Define left and right margins for blending to occur between
->   - Define a weight matrix for image 1 such that:
-> 	  - From the left of the output space to the left margin the weight is 1
-> 	  - From the left margin to the right margin, the weight linearly decrements from 1 to 0
->   - Define a weight matrix for image 2 such that:
-> 	  - From the right of the output space to the right margin the weight is 1
-> 	  - From the left margin to the right margin, the weight linearly increments from 0 to 1
->   - Apply the weight matrices to their corresponding images
->   - Combine the images
+>   * Define left and right margins for blending to occur between
+>   * Define a weight matrix for image 1 such that:
+> 	  * From the left of the output space to the left margin the weight is 1
+>     * From the left margin to the right margin, the weight linearly decrements from 1 to 0
+>   * Define a weight matrix for image 2 such that:
+> 	  * From the right of the output space to the right margin the weight is 1
+> 	  * From the left margin to the right margin, the weight linearly increments from 0 to 1
+>   * Apply the weight matrices to their corresponding images
+>   * Combine the images
 >
 > * **Stitching Multiple Images**
->   - Combine the effects of multiple transformation matrices
+>   * Combine the effects of multiple transformation matrices
 
 |Harris corner response|
 |-|
