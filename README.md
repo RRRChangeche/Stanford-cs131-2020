@@ -241,7 +241,7 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 
 |Harris corner response|
 |-|
-|![1_1](fall_2020/hw3_release/1_output.png) |
+|![1_1](https://github.com/RRRChangeche/Stanford_CS131_2020/blob/main/fall_2020/hw3_release/1_output.png) |
 |**Keypoinnts**|
 |![1_2](fall_2020/hw3_release/1_2_output.png) |
 |**Describing and matching keypoints (simple descriptor)**|
