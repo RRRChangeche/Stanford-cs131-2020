@@ -59,8 +59,9 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 >
 > * It's about 2x faster by using separable filter in this case.
 
-|**Convolution**|
+|Pictures|
 |-|
+|**Convolution**|
 |![1_4](fall_2020/hw1_release/1_4_output.png)|
 |**Zero-mean cross-correlation**|
 |![2_1](fall_2020/hw1_release/2_1_output.png) |
@@ -153,8 +154,9 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 >   * Converse infinite lines to finite lines
 >   * [Reference](https://web.ipac.caltech.edu/staff/fmasci/home/astro_refs/HoughTrans_lines_09.pdf)
 
-|Smooth|
+|Pictures|
 |-|
+|**Smooth**|
 |![1_1](fall_2020/hw2_release/1_1_output.png) |
 |**Grdient of x and y**|
 |![1_2](fall_2020/hw2_release/1_2_output.png) |
@@ -207,8 +209,8 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 > * **RANSAC**
 >   * Steps:
 >   1. Given parameters: 
->     - n_iters: 重複疊代次數
->     - threshold: 判斷inliers閥值
+>       * n_iters: 重複疊代次數
+>       * threshold: 判斷inliers閥值
 >   2. 隨機選取一組配對點 Select random set of matches
 >   3. 計算仿射變換矩陣 使p2*H = p1 Compute affine transformation matrix (use `np.linalg.lstsq`)
 >   4. 以歐式距離根據給定threshold判斷inliers數量 Compute inliers via Euclidean distance (use `np.linalg.norm(...ord=2)`)
@@ -239,8 +241,9 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 > * **Stitching Multiple Images**
 >   * Combine the effects of multiple transformation matrices
 
-|Harris corner response|
+|Pictures|
 |-|
+|**Harris corner response**|
 |![1_1](fall_2020/hw3_release/1_output.png) |
 |**Keypoinnts**|
 |![1_2](fall_2020/hw3_release/1_2_output.png) |
