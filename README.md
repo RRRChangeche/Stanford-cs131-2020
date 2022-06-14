@@ -261,3 +261,15 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 |![5](fall_2020/hw3_release/5_output.png) |
 |**Stitching Multiple Images**|
 |![6](fall_2020/hw3_release/6_output.png) |
+
+## hw4: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/fall_2020/hw4_release)
+
+* Clustering Algorithm
+  * K-Means Clustering 
+  * K-Means Convergence
+  * Heirarchical Agglomerative Clustering (HAC)
+* Pixel-Level Features
+  * Color features
+  * Color and Position Features
+* Extra Credit: Implement Your Own Feature
+* Quantitative Evaluation
