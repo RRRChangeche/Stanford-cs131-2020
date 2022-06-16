@@ -7,6 +7,8 @@ Last modified: 10/9/2020
 Python Version: 3.5+
 """
 
+from numbers import Integral
+from tkinter.tix import INTEGER
 import numpy as np
 import random
 from scipy.spatial.distance import squareform, pdist, cdist
@@ -45,7 +47,46 @@ def kmeans(features, k, num_iters=100):
 
     for n in range(num_iters):
         ### YOUR CODE HERE
-        pass
+        tmp_assignments = np.array(assignments)
+
+        # for each points
+        for i in range(N):
+            p = features[i]
+            min_dist = 1<<32
+            closest_center = 0
+
+            # find closest center = nin_idx
+            for j in range(k):
+                center = centers[j]
+                d = ((p[0]-center[0])**2 + (p[1]-center[1])**2)**0.5   # euclidean distance
+                if d < min_dist: 
+                    min_dist = d
+                    closest_center = j
+
+            # Assign each point to the closest center
+            tmp_assignments[i] = closest_center
+
+        # Stop if cluster assignments did not change
+        if np.array_equal(assignments, tmp_assignments): break
+        else: assignments = tmp_assignments  # 5. Go to step 2
+
+        # Compute new center of each cluster
+        for i in range(k):
+            clusters = []
+            for j in range(N):
+                group = assignments[j]
+                p = features[j]
+                if i==group: clusters.append(p)
+            
+            size = len(clusters)
+            newx=newy=0
+            for p in clusters:
+                newx+=p[0]
+                newy+=p[1]
+            newx/=size
+            newy/=size
+            centers[i] = np.array([newx, newy])
+    
         ### END YOUR CODE
 
     return assignments
@@ -81,9 +122,19 @@ def kmeans_fast(features, k, num_iters=100):
 
     for n in range(num_iters):
         ### YOUR CODE HERE
-        pass
-        ### END YOUR CODE
+        # 2. Assign each point to the closest center
+        distances = cdist(features, centers, 'euclidean')
 
+        # 4. Stop if cluster assignments did not change
+        tmp_assignment = np.argmin(distances, axis=1)
+        if np.array_equal(assignments, tmp_assignment): break
+        else: assignments = tmp_assignment  # 5. Go to step 2
+
+        # 3. Compute new center of each cluster
+        centers = np.array([np.mean(features[assignments==i], axis=0) for i in range(k)])
+
+        ### END YOUR CODE
+    print("niters: ", n)
     return assignments
 
 

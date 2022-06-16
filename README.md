@@ -265,7 +265,7 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 ## hw4: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/fall_2020/hw4_release)
 
 * Clustering Algorithm
-  * K-Means Clustering 
+  * K-Means Clustering
   * K-Means Convergence
   * Heirarchical Agglomerative Clustering (HAC)
 * Pixel-Level Features
