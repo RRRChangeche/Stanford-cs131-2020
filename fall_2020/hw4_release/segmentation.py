@@ -187,7 +187,24 @@ def hierarchical_clustering(features, k):
 
     while n_clusters > k:
         ### YOUR CODE HERE
-        pass
+        # Compute distances between all pairs of clusters
+        distance = pdist(centers, 'euclidean')
+        dist_matrix = squareform(distance)  # dist_matrix = cdist(centers, centers, 'euclidean')
+
+        # Merge the pair of clusters that are closest to each other
+        dist_matrix[dist_matrix==0] = 1<<32 # because there 0 at diagonal index
+        # (min_row,), (min_col,) = np.where(dist_matrix == np.amin(dist_matrix))
+        min_row, min_col = np.unravel_index(dist_matrix.argmin(), dist_matrix.shape)
+        save_idx = min(min_row, min_col)
+        merge_idx = max(min_row, min_col)
+        assignments[assignments==merge_idx] = save_idx
+        assignments[assignments>=merge_idx] -= 1
+        
+        # Compute new center of merged cluster
+        centers = np.delete(centers, merge_idx, axis = 0)
+        centers[save_idx] = np.mean(features[assignments==save_idx], axis=0)
+        n_clusters -= 1
+        # print(n_clusters)
         ### END YOUR CODE
 
     return assignments
