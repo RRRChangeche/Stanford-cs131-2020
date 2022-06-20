@@ -9,6 +9,7 @@ Python Version: 3.5+
 
 from numbers import Integral
 from tkinter.tix import INTEGER
+from xml.sax.handler import feature_external_ges
 import numpy as np
 import random
 from scipy.spatial.distance import squareform, pdist, cdist
@@ -193,8 +194,7 @@ def hierarchical_clustering(features, k):
 
         # Merge the pair of clusters that are closest to each other
         dist_matrix[dist_matrix==0] = 1<<32 # because there 0 at diagonal index
-        # (min_row,), (min_col,) = np.where(dist_matrix == np.amin(dist_matrix))
-        min_row, min_col = np.unravel_index(dist_matrix.argmin(), dist_matrix.shape)
+        min_row, min_col = np.unravel_index(dist_matrix.argmin(), dist_matrix.shape) # (min_row,), (min_col,) = np.where(dist_matrix == np.amin(dist_matrix))
         save_idx = min(min_row, min_col)
         merge_idx = max(min_row, min_col)
         assignments[assignments==merge_idx] = save_idx
@@ -204,7 +204,6 @@ def hierarchical_clustering(features, k):
         centers = np.delete(centers, merge_idx, axis = 0)
         centers[save_idx] = np.mean(features[assignments==save_idx], axis=0)
         n_clusters -= 1
-        # print(n_clusters)
         ### END YOUR CODE
 
     return assignments
@@ -225,7 +224,7 @@ def color_features(img):
     features = np.zeros((H*W, C))
 
     ### YOUR CODE HERE
-    pass
+    features = img.reshape((H*W, C))
     ### END YOUR CODE
 
     return features
@@ -254,7 +253,10 @@ def color_position_features(img):
     features = np.zeros((H*W, C+2))
 
     ### YOUR CODE HERE
-    pass
+    pos = np.dstack(np.mgrid[0:H, 0:W]).reshape(H*W, 2)
+    features[:, 0:C] = color.reshape(H*W, C)
+    features[:, C:C+2] = pos
+    features = (features - np.mean(features, axis=0))/ np.std(features, axis=0)
     ### END YOUR CODE
 
     return features
@@ -268,9 +270,44 @@ def my_features(img):
     Returns:
         features - array of (H * W, C)
     """
-    features = None
+    H, W, C = img.shape
+    color = img_as_float(img)
+    # features = np.zeros((H*W, C+2))
+    features = np.zeros((H*W, C+2+2))
+
     ### YOUR CODE HERE
-    pass
+    pos = np.dstack(np.mgrid[0:H, 0:W]).reshape(H*W, 2)
+    pos = (pos - np.mean(pos, axis=0))/ np.std(pos, axis=0)
+
+    # pos in r-theta coordinate
+    # Y, X = np.mgrid[:H, :W]
+    # Y -= int(H/2)
+    # X -= int(W/2)
+    # theta = np.rad2deg(np.arctan2(Y, X))
+    # theta = ((theta+360.0)%360).reshape(H*W, 1)
+    # R = ((X**2+Y**2)**0.5).reshape(H*W, 1)
+    # theta = (theta - np.mean(theta, axis=0))/ np.std(theta, axis=0)
+    # R = (R - np.mean(R, axis=0))/ np.std(R, axis=0)
+
+    # Gradient
+    from edge import gaussian_kernel, conv,gradient
+    from skimage.color import rgb2gray
+    kernel = gaussian_kernel(3, 1.4)
+    img_gray = rgb2gray(img)
+    smoothed = conv(img_gray, kernel)
+    G, theta = gradient(smoothed)
+    theta = theta.reshape(H*W, 1)
+    theta = (theta - np.mean(theta, axis=0))/ np.std(theta, axis=0)
+    G = G.reshape(H*W, 1)
+    G = (G - np.mean(G, axis=0))/ np.std(G, axis=0)
+
+    features[:, 0:C] = color.reshape(H*W, C)
+    features[:, C:C+2] = pos
+    # features[:, C+2:C+3] = theta
+    # features[:, C+3:C+4] = R
+    features[:, C+2:C+3] = theta
+    features[:, C+3:C+4] = G
+    features = (features - np.mean(features, axis=0))/ np.std(features, axis=0)
     ### END YOUR CODE
     return features
 
