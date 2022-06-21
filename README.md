@@ -252,9 +252,9 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 
 |Transformation|
 |-|
-|**Transformation matrix $H$ with `least square` method**|
+|**Transformation matrix $H$ - least square method**|
 |![3_1](fall_2020/hw3_release/3_1_output.png) |
-|**Transformation matrix $H$ with `RANSAC` method (Robust matches)**|
+|**Transformation matrix $H$ - RANSAC method (Robust matches)**|
 |![3_2](fall_2020/hw3_release/3_2_output.png) |
 |![3_3](fall_2020/hw3_release/3_3_output.png) |
 
