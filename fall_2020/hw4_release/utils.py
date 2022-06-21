@@ -53,10 +53,10 @@ def compute_segmentation(img, k,
         'Scale should be in the range between 0 and 1'
 
     H, W, C = img.shape
-
     if scale > 0:
         # Scale down the image for faster computation.
-        img = transform.rescale(img, scale)
+        # img = transform.rescale(img, scale)
+        img = transform.rescale(img, (scale, scale, 1))
 
     features = feature_fn(img)
     assignments = clustering_fn(features, k)

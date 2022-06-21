@@ -135,7 +135,7 @@ def kmeans_fast(features, k, num_iters=100):
         centers = np.array([np.mean(features[assignments==i], axis=0) for i in range(k)])
 
         ### END YOUR CODE
-    print("niters: ", n)
+    # print("niters: ", n)
     return assignments
 
 
@@ -273,7 +273,11 @@ def my_features(img):
     H, W, C = img.shape
     color = img_as_float(img)
     # features = np.zeros((H*W, C+2))
-    features = np.zeros((H*W, C+2+2))
+    # features = np.zeros((H*W, C+2+1))
+    # features = np.zeros((H*W, C+2+2))
+    # features = np.zeros((H*W, C+2+C))
+    features = np.zeros((H*W, C+2+C+1))
+    # features = np.zeros((H*W, C+C+1))
 
     ### YOUR CODE HERE
     pos = np.dstack(np.mgrid[0:H, 0:W]).reshape(H*W, 2)
@@ -292,21 +296,33 @@ def my_features(img):
     # Gradient
     from edge import gaussian_kernel, conv,gradient
     from skimage.color import rgb2gray
-    kernel = gaussian_kernel(3, 1.4)
+    kernel = gaussian_kernel(9, 1.4)
     img_gray = rgb2gray(img)
     smoothed = conv(img_gray, kernel)
     G, theta = gradient(smoothed)
     theta = theta.reshape(H*W, 1)
     theta = (theta - np.mean(theta, axis=0))/ np.std(theta, axis=0)
-    G = G.reshape(H*W, 1)
-    G = (G - np.mean(G, axis=0))/ np.std(G, axis=0)
+    # G = G.reshape(H*W, 1)
+    # G = (G - np.mean(G, axis=0))/ np.std(G, axis=0)
+
+    # HSV
+    from skimage.color import rgb2hsv
+    hsv = rgb2hsv(img)
+    hsv = hsv.reshape(H*W, C)
+    hsv = (hsv - np.mean(hsv, axis=0))/ np.std(hsv, axis=0)
 
     features[:, 0:C] = color.reshape(H*W, C)
     features[:, C:C+2] = pos
     # features[:, C+2:C+3] = theta
     # features[:, C+3:C+4] = R
-    features[:, C+2:C+3] = theta
-    features[:, C+3:C+4] = G
+    # features[:, C+2:C+3] = theta
+    # features[:, C+3:C+4] = G
+    # features[:, C+2:C+3] = G
+    features[:, C+2:C+2+C] = hsv
+    # features[:, C:C+C] = hsv
+    # features[:, C+2+C:C+2+C+1] = G
+    features[:, C+2+C:C+2+C+1] = theta 
+    # features[:, C+C:C+C+1] = theta 
     features = (features - np.mean(features, axis=0))/ np.std(features, axis=0)
     ### END YOUR CODE
     return features
@@ -331,7 +347,8 @@ def compute_accuracy(mask_gt, mask):
 
     accuracy = None
     ### YOUR CODE HERE
-    pass
+    H, W = mask_gt.shape
+    accuracy = np.count_nonzero(mask == mask_gt)/(H*W)
     ### END YOUR CODE
 
     return accuracy
