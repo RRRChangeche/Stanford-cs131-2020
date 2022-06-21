@@ -273,3 +273,43 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
   * Color and Position Features
 * Extra Credit: Implement Your Own Feature
 * Quantitative Evaluation
+
+> What I've learned?
+>
+> * **K-Means Clustering**
+>   * A method to get keypoints of the image.
+>   * Steps:
+>   1. Compute Ix and Iy derivatives of an image.
+>   2. Compute product of Ix^2/ Iy^2/ IxIy at each pixel
+>   3. Apply Gaussian smooth to 2. to get Sxx/ Syy/ Sxy
+>   4. Compute matrix M at each pixel and eigen value of M
+>   5. Compute response value R at each pixel, where R = Det(M)-k(Trace(M)^2)
+>   6. Use function `corner_peaks` from `skimage.feature` to get local maxima of response map by performing NMS and **localize keypoints**
+>
+> * **Heirarchical Agglomerative Clustering (HAC)**
+> * **Pixel-Level Features**
+
+|Pictures|
+|-|
+|**Clustering Algorithm**|
+|![1_1](fall_2020/hw4_release/1_output.png) |
+
+|**Pixel-Level Features**|
+|-|
+| Original ![2_1](fall_2020/hw4_release/2_1_output.png) |
+
+| Color Features | Visualization |
+|-|-|
+| ![2_2](fall_2020/hw4_release/2_2_output.png) | ![2_3](fall_2020/hw4_release/2_3_output.png) |
+
+| Color and Position Features | Visualization |
+|-|-|
+| ![2_4](fall_2020/hw4_release/2_4_output.png) | ![2_5](fall_2020/hw4_release/2_5_output.png) |
+
+| My Features | Visualization |
+|-|-|
+| ![2_6](fall_2020/hw4_release/2_6_output.png) | ![2_7](fall_2020/hw4_release/2_7_output.png) |
+
+|**Quantitative Evaluation**|
+|-|
+|![3](fall_2020/hw4_release/3_output.png) |
