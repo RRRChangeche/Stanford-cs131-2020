@@ -141,10 +141,10 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 >
 > * **Implement Gradient and calculate it's magnitude and direction of each pixel.**
 >
-> * **NMS流程**
->   * 先將方向以45度分為8等分 [0,45,90,135,180,225,270,315]
->   * 在梯度方向和鄰近像素比較梯度大小
->   * 如果像素在鄰近像素中是梯度最大, 則將像素留下
+> * **NMS steps**
+>   * Round the gradient direction to the nearest 45 degrees, corresponding to the use if an 8-conntected neighbourhood. $[0,45,90,135,180,225,270,315]$
+>   * Compare the edge strength of the current pixel with the edge strength of the pixel along with positive and negative geadient directions
+>   * If the edge strength of the current pixel if the largest, then preserve the value of the edge strength. If not, suppress (i.e. remove) the value.
 >
 > * **Hough Transform steps:**
 >   * Find edges using Canny edge detector
@@ -188,12 +188,12 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 > * **Harris corner detector**
 >   * A method to get keypoints of the image.
 >   * Steps:
->   1. Compute Ix and Iy derivatives of an image.
->   2. Compute product of Ix^2/ Iy^2/ IxIy at each pixel
->   3. Apply Gaussian smooth to 2. to get Sxx/ Syy/ Sxy
->   4. Compute matrix M at each pixel and eigen value of M
->   5. Compute response value R at each pixel, where R = Det(M)-k(Trace(M)^2)
->   6. Use function `corner_peaks` from `skimage.feature` to get local maxima of response map by performing NMS and **localize keypoints**
+>     1. Compute Ix and Iy derivatives of an image.
+>     2. Compute product of Ix^2/ Iy^2/ IxIy at each pixel
+>     3. Apply Gaussian smooth to 2. to get Sxx/ Syy/ Sxy
+>     4. Compute matrix M at each pixel and eigen value of M
+>     5. Compute response value R at each pixel, where R = Det(M)-k(Trace(M)^2)
+>     6. Use function `corner_peaks` from `skimage.feature` to get local maxima of response map by performing NMS and **localize keypoints**
 >
 > * **Describing and Matching Keypoints**
 >   * Creating descriptors
@@ -208,14 +208,14 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 >
 > * **RANSAC**
 >   * Steps:
->   1. Given parameters: 
->       * n_iters: 重複疊代次數
->       * threshold: 判斷inliers閥值
->   2. 隨機選取一組配對點 Select random set of matches
->   3. 計算仿射變換矩陣 使p2*H = p1 Compute affine transformation matrix (use `np.linalg.lstsq`)
->   4. 以歐式距離根據給定threshold判斷inliers數量 Compute inliers via Euclidean distance (use `np.linalg.norm(...ord=2)`)
->   5. 將有最多inliers的模型保存起來 Keep the largest set of inliers
->   6. 使用最多的那些inliers 重新計算一次Least-squares Re-compute least-squares estimate on all of the inliers
+>     1. Given parameters:
+>        * n_iters: number of iterations
+>        * threshold: limitation for inliers
+>     2. Select a random set of matches
+>     3. Compute affine transformation matrix letting p2*H = p1 (use `np.linalg.lstsq`)
+>     4. Compute the number of inliers via Euclidean distance within the threshold (use `np.linalg.norm(...ord=2)`)
+>     5. Keep the model with the most number of inliers
+>     6. Re-compute least-squares estimate on all of the inliers
 >
 > * **Histogram of Oriented Gradients (HOG)**
 >   * A method to describe keypoint
@@ -277,17 +277,27 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 > What I've learned?
 >
 > * **K-Means Clustering**
->   * A method to get keypoints of the image.
+>   * An algorithm for clustering by comparing distances between every point to clusters with the given parameter k.
+>   * k: number of clusters
 >   * Steps:
->   1. Compute Ix and Iy derivatives of an image.
->   2. Compute product of Ix^2/ Iy^2/ IxIy at each pixel
->   3. Apply Gaussian smooth to 2. to get Sxx/ Syy/ Sxy
->   4. Compute matrix M at each pixel and eigen value of M
->   5. Compute response value R at each pixel, where R = Det(M)-k(Trace(M)^2)
->   6. Use function `corner_peaks` from `skimage.feature` to get local maxima of response map by performing NMS and **localize keypoints**
+>     1. Randomly initialize k cluster centers
+>     2. Assign each point to the closest center
+>     3. Recompute the new center of each cluster
+>     4. Stop if cluster assignments did not change
+>     5. Otherwise, go back to step 2
 >
 > * **Heirarchical Agglomerative Clustering (HAC)**
-> * **Pixel-Level Features**
+>   * An algorithm for clustering by merging the closest pair of clusters with the given parameter k.
+>   * k: number of clusters
+>   * Steps:
+>     1. Each point is its own cluster in the beginning
+>     2. Compute centers of every clusters
+>     3. Compute euclidean distances between every pairs of clusters (use `pdist` import from `scipy.spatial.distance`)
+>     4. Merge the closest pair of cluster as a new cluster
+>     5. Repeat steps 2-4 until k clusters remain
+>
+> * How to improve the performance of the segmentation algorithm by modifying parameters.
+>  
 
 |Pictures|
 |-|
@@ -296,7 +306,8 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 
 |**Pixel-Level Features**|
 |-|
-| Original ![2_1](fall_2020/hw4_release/2_1_output.png) |
+|Original|
+| ![2_1](fall_2020/hw4_release/2_1_output.png) |
 
 | Color Features | Visualization |
 |-|-|
