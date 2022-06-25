@@ -7,7 +7,7 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 * Environment: python3.6+
 * Requirements: run     "pip install -r requirements.txt"
 
-## hw0: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/fall_2020/hw0_release)
+## hw0: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw0_release)
 
 * Linear Algebra and Numpy review
 * Image manipulation
@@ -20,9 +20,9 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
   
 | load image | blur | rotate |
 | ------------- | ------------- | ------------- |
-| ![0_1](fall_2020/hw0_release/image1.jpg)  | ![0_2](fall_2020/hw0_release/16_16_baboon.png)  | ![0_3](fall_2020/hw0_release/rotated_output.png)  |
+| ![0_1](hw0_release/image1.jpg)  | ![0_2](hw0_release/16_16_baboon.png)  | ![0_3](hw0_release/rotated_output.png)  |
 
-## hw1: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/fall_2020/hw1_release)
+## hw1: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw1_release)
 
 * Convolution
   * prove Commutative property
@@ -62,15 +62,15 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 |Pictures|
 |-|
 |**Convolution**|
-|![1_4](fall_2020/hw1_release/1_4_output.png)|
+|![1_4](hw1_release/1_4_output.png)|
 |**Zero-mean cross-correlation**|
-|![2_1](fall_2020/hw1_release/2_1_output.png) |
+|![2_1](hw1_release/2_1_output.png) |
 |**Normalized cross-correlation**|
-|![1_4_3](fall_2020/hw1_release/2_2_output.png) |
+|![1_4_3](hw1_release/2_2_output.png) |
 |**Normal V.S. Separable convolution**|
-![3_1](fall_2020/hw1_release/3_1_output.png)
+![3_1](hw1_release/3_1_output.png)
 
-## Recitation 4 - Advanced Numpy Tutorial: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/fall_2020/hw1_release)
+## Recitation 4 - Advanced Numpy Tutorial: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw1_release)
 
 * Creating numpy array
 * Array Attributes
@@ -121,7 +121,7 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 > ex: c = a*b, when a's shape is (1,3)/ b's shape is (3,1), then c's shape is (3,3) because of broadcasting  operation.
 >
 
-## hw2: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/fall_2020/hw2_release)
+## hw2: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw2_release)
 
 * Canny edge detector
   1. Smoothing
@@ -141,7 +141,7 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 >
 > * **Implement Gradient and calculate it's magnitude and direction of each pixel.**
 >
-> * **NMS steps**
+> * **NMS steps:**
 >   * Round the gradient direction to the nearest 45 degrees, corresponding to the use if an 8-conntected neighbourhood. $[0,45,90,135,180,225,270,315]$
 >   * Compare the edge strength of the current pixel with the edge strength of the pixel along with positive and negative geadient directions
 >   * If the edge strength of the current pixel if the largest, then preserve the value of the edge strength. If not, suppress (i.e. remove) the value.
@@ -157,27 +157,27 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 |Pictures|
 |-|
 |**Smooth**|
-|![1_1](fall_2020/hw2_release/1_1_output.png) |
+|![1_1](hw2_release/1_1_output.png) |
 |**Grdient of x and y**|
-|![1_2](fall_2020/hw2_release/1_2_output.png) |
+|![1_2](hw2_release/1_2_output.png) |
 |**NMS**|
-|![1_3](fall_2020/hw2_release/1_3_output.png) |
+|![1_3](hw2_release/1_3_output.png) |
 |**Double Thresholding**|
-|![1_4](fall_2020/hw2_release/1_4_output.png) |
+|![1_4](hw2_release/1_4_output.png) |
 |**Edge tracking by hysterisis**|
-|![1_5](fall_2020/hw2_release/1_5_output.png) |
+|![1_5](hw2_release/1_5_output.png) |
 |**Edge detection**|
-|![2_1](fall_2020/hw2_release/2_1_output.png) |
+|![2_1](hw2_release/2_1_output.png) |
 |**ROI**|
-|![2_2](fall_2020/hw2_release/2_2_output.png) |
+|![2_2](hw2_release/2_2_output.png) |
 |**Hough transform**|
-|![2_3](fall_2020/hw2_release/2_3_output.png) |
+|![2_3](hw2_release/2_3_output.png) |
 
-## hw3: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/fall_2020/hw3_release)
+## hw3: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw3_release)
 
 * Harris corner detector
 * Describing and Matching Keypoints
-* Transformation Estimation 計算轉置矩陣
+* Transformation Estimation
 * RANSAC
 * Histogram of Oriented Gradients (HOG)
 * Better Image Merging - Linear Blending
@@ -220,12 +220,12 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 > * **Histogram of Oriented Gradients (HOG)**
 >   * A method to describe keypoint
 >   * Steps:
->   1. Compute the gradient image in x and y directions
->      * Use the sobel filter provided by skimage.filters
->   2. Compute gradient histograms
->      * Divide image into cells, and calculate histogram of gradients in each cell
->   3. Flatten block of histograms into feature vector
->   4. Normalize flattened block by L2 norm
+>     1. Compute the gradient image in x and y directions
+>        * Use the sobel filter provided by skimage.filters
+>     2. Compute gradient histograms
+>        * Divide image into cells, and calculate histogram of gradients in each cell
+>     3. Flatten block of histograms into feature vector
+>     4. Normalize flattened block by L2 norm
 >
 > * **Better Image Merging - Linear Blending**
 >   * Define left and right margins for blending to occur between
@@ -244,25 +244,25 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 |Pictures|
 |-|
 |**Harris corner response**|
-|![1_1](fall_2020/hw3_release/1_output.png) |
+|![1_1](hw3_release/1_output.png) |
 |**Keypoinnts**|
-|![1_2](fall_2020/hw3_release/1_2_output.png) |
+|![1_2](hw3_release/1_2_output.png) |
 |**Describing and matching keypoints (simple descriptor)**|
-|![2](fall_2020/hw3_release/2_output.png) |
+|![2](hw3_release/2_output.png) |
 |**Transformation matrix H with `least square` method**|
-|![3_1](fall_2020/hw3_release/3_1_output.png) |
+|![3_1](hw3_release/3_1_output.png) |
 |**Transformation matrix H with `RANSAC` method(Robust matches)**|
-|![3_2](fall_2020/hw3_release/3_2_output.png) |
-|![3_3](fall_2020/hw3_release/3_3_output.png) |
+|![3_2](hw3_release/3_2_output.png) |
+|![3_3](hw3_release/3_3_output.png) |
 |**HOG descriptor**|
-|![4_2](fall_2020/hw3_release/4_2_output.png) |
-|![4_3](fall_2020/hw3_release/4_3_output.png) |
+|![4_2](hw3_release/4_2_output.png) |
+|![4_3](hw3_release/4_3_output.png) |
 |**Better Image Merging - Linear Blending**|
-|![5](fall_2020/hw3_release/5_output.png) |
+|![5](hw3_release/5_output.png) |
 |**Stitching Multiple Images**|
-|![6](fall_2020/hw3_release/6_output.png) |
+|![6](hw3_release/6_output.png) |
 
-## hw4: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/fall_2020/hw4_release)
+## hw4: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw4_release)
 
 * Clustering Algorithm
   * K-Means Clustering
@@ -302,25 +302,25 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 |Pictures|
 |-|
 |**Clustering Algorithm**|
-|![1_1](fall_2020/hw4_release/1_output.png) |
+|![1_1](hw4_release/1_output.png) |
 
 |**Pixel-Level Features**|
 |-|
 |Original|
-| ![2_1](fall_2020/hw4_release/2_1_output.png) |
+| ![2_1](hw4_release/2_1_output.png) |
 
 | Color Features | Visualization |
 |-|-|
-| ![2_2](fall_2020/hw4_release/2_2_output.png) | ![2_3](fall_2020/hw4_release/2_3_output.png) |
+| ![2_2](hw4_release/2_2_output.png) | ![2_3](hw4_release/2_3_output.png) |
 
 | Color and Position Features | Visualization |
 |-|-|
-| ![2_4](fall_2020/hw4_release/2_4_output.png) | ![2_5](fall_2020/hw4_release/2_5_output.png) |
+| ![2_4](hw4_release/2_4_output.png) | ![2_5](hw4_release/2_5_output.png) |
 
 | My Features | Visualization |
 |-|-|
-| ![2_6](fall_2020/hw4_release/2_6_output.png) | ![2_7](fall_2020/hw4_release/2_7_output.png) |
+| ![2_6](hw4_release/2_6_output.png) | ![2_7](hw4_release/2_7_output.png) |
 
 |**Quantitative Evaluation**|
 |-|
-|![3](fall_2020/hw4_release/3_output.png) |
+|![3](hw4_release/3_output.png) |
