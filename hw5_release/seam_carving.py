@@ -30,7 +30,14 @@ def energy_function(image):
     gray_image = color.rgb2gray(image)
 
     ### YOUR CODE HERE
-    pass
+    '''
+    np.gradient return: 
+    A list of ndarrays (or a single ndarray if there is only one dimension) 
+    corresponding to the derivatives of f with respect to each dimension. 
+    Each derivative has the same shape as f.
+    ''' 
+    dx, dy = np.gradient(gray_image)
+    out = abs(dx) + abs(dy)
     ### END YOUR CODE
 
     return out
@@ -80,7 +87,18 @@ def compute_cost(image, energy, axis=1):
     paths[0] = 0  # we don't care about the first row of paths
 
     ### YOUR CODE HERE
-    pass
+    # Calculate cost at each pixel
+    for i in range(1, H):
+        # Edge cases
+        cost[i][0] = energy[i][0] + min(cost[i][0], cost[i][1])
+        cost[i][W-1] = energy[i][W-1] + min(cost[i][W-1],cost[i][W-2])
+
+        for j in range(1, W-1):
+            cost[i][j] = energy[i][j] + min([cost[i][j-1], cost[i][j], cost[i][j+1]])
+
+        # Pick minimum cost at each row as path 
+        # path[i]
+
     ### END YOUR CODE
 
     if axis == 0:

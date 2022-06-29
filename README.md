@@ -324,3 +324,17 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 |**Quantitative Evaluation**|
 |-|
 |![3](hw4_release/3_output.png) |
+
+## hw5: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw5_release)
+
+* Image Reducing using Seam Carving
+  * Energy function
+  * Compute cost
+* Finding optimal seams
+  * Backtrack seam
+  * Reduce
+* Image Enlarging
+* Faster reduce
+  * Reducing and enlarging on another image
+  * Forward energy
+* Object Removal
