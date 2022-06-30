@@ -7,6 +7,7 @@ Last modified: 10/16/2020
 Python Version: 3.5+
 """
 
+from email.utils import make_msgid
 import numpy as np
 from skimage import color
 
@@ -89,15 +90,27 @@ def compute_cost(image, energy, axis=1):
     ### YOUR CODE HERE
     # Calculate cost at each pixel
     for i in range(1, H):
-        # Edge cases
-        cost[i][0] = energy[i][0] + min(cost[i][0], cost[i][1])
-        cost[i][W-1] = energy[i][W-1] + min(cost[i][W-1],cost[i][W-2])
+        # Calculate cost map at each row 
+        '''Cost map = M[i,j] = E[i, j] + min(M[i-1, j-1], M[i-1, j], M[i-1, j+1])'''
+        M_left = cost[i-1][:W-1]
+        M_mid = cost[i-1]
+        M_right = cost[i-1][1:]
 
-        for j in range(1, W-1):
-            cost[i][j] = energy[i][j] + min([cost[i][j-1], cost[i][j], cost[i][j+1]])
+        # Edge cases - left side and right side file with large number
+        M_left = np.insert(M_left, 0, 1<<32, axis=0)
+        M_right = np.insert(M_right, W-1, 1<<32, axis=0)
 
-        # Pick minimum cost at each row as path 
-        # path[i]
+        M = np.array([M_left, M_mid, M_right])
+        cost[i] = energy[i] + np.min(M, axis=0)
+        
+        # Pick minimum cost at row i-1 as path
+        '''
+        M.shape = (3, W), argmin returns 0~2
+        return 0 -> path should go through up and left
+        return 1 -> path should go through up
+        return 2 -> path should go through up and right
+        '''
+        paths[i] = np.argmin(M, axis=0) - 1
 
     ### END YOUR CODE
 
@@ -136,7 +149,15 @@ def backtrack_seam(paths, end):
     seam[H-1] = end
 
     ### YOUR CODE HERE
-    pass
+    for i in range(H-2, -1, -1):
+        # if paths[i+1][seam[i+1]] == -1:
+        #     seam[i] = seam[i+1] - 1
+        # elif paths[i+1][seam[i+1]] == 0:
+        #     seam[i] = seam[i+1]
+        # elif paths[i+1][seam[i+1]] == 1:
+        #     seam[i] = seam[i+1] + 1
+        seam[i] = seam[i+1] + paths[i+1][seam[i+1]]
+
     ### END YOUR CODE
 
     # Check that seam only contains values in [0, W-1]
@@ -166,7 +187,7 @@ def remove_seam(image, seam):
     out = None
     H, W, C = image.shape
     ### YOUR CODE HERE
-    pass
+    out  = np.delete(image, seam).reshape(-1, W-1)
     ### END YOUR CODE
     out = np.squeeze(out)  # remove last dimension if C == 1
 
@@ -214,7 +235,11 @@ def reduce(image, size, axis=1, efunc=energy_function, cfunc=compute_cost, bfunc
     assert size > 0, "Size must be greater than zero"
 
     ### YOUR CODE HERE
-    pass
+    for _ in range(W-size):
+        energy = efunc(out)
+        cost, paths = cfunc(out, energy)
+        seam = bfunc(paths, np.argmin(cost[-1]))
+        out = rfunc(out, seam)
     ### END YOUR CODE
 
     assert out.shape[1] == size, "Output doesn't have the right shape"
@@ -409,7 +434,7 @@ def enlarge(image, size, axis=1, efunc=energy_function, cfunc=compute_cost, dfun
     assert size <= 2 * W, "size must be smaller than %d" % (2 * W)
 
     ### YOUR CODE HERE
-    pass
+    
     ### END YOUR CODE
 
     if axis == 0:
