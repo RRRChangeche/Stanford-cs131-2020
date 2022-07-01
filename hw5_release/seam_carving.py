@@ -187,7 +187,7 @@ def remove_seam(image, seam):
     out = None
     H, W, C = image.shape
     ### YOUR CODE HERE
-    out  = np.delete(image, seam).reshape(-1, W-1)
+    out = image[np.arange(W) != seam.reshape(-1,1)].reshape(H, W-1, C)
     ### END YOUR CODE
     out = np.squeeze(out)  # remove last dimension if C == 1
 
