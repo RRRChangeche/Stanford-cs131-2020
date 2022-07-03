@@ -265,8 +265,17 @@ def duplicate_seam(image, seam):
 
     H, W, C = image.shape
     out = np.zeros((H, W + 1, C))
+
+    # print(image[0][seam[0]])
+    # print(seam[0])
+    # print(image[0].shape)
+    # print(np.insert(image[0], seam[0], image[0][seam[0]]).shape)
+    # print(out[0].shape)
     ### YOUR CODE HERE
-    pass
+    for i in range(H):
+        rowIdx = seam[i]
+        value = image[i][rowIdx]
+        out[i] = np.insert(image[i], rowIdx, value).reshape(W + 1, C)
     ### END YOUR CODE
 
     return out
@@ -307,7 +316,11 @@ def enlarge_naive(image, size, axis=1, efunc=energy_function, cfunc=compute_cost
     assert size > W, "size must be greather than %d" % W
 
     ### YOUR CODE HERE
-    pass
+    for _ in range(size-W):
+        energy = efunc(out)
+        cost, paths = cfunc(out, energy)
+        seam = bfunc(paths, np.argmin(cost[-1]))
+        out = dfunc(out, seam)
     ### END YOUR CODE
 
     if axis == 0:
