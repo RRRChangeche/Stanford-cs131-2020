@@ -266,16 +266,13 @@ def duplicate_seam(image, seam):
     H, W, C = image.shape
     out = np.zeros((H, W + 1, C))
 
-    # print(image[0][seam[0]])
-    # print(seam[0])
-    # print(image[0].shape)
-    # print(np.insert(image[0], seam[0], image[0][seam[0]]).shape)
-    # print(out[0].shape)
     ### YOUR CODE HERE
     for i in range(H):
         rowIdx = seam[i]
         value = image[i][rowIdx]
-        out[i] = np.insert(image[i], rowIdx, value).reshape(W + 1, C)
+        out[i] = np.insert(image[i], rowIdx, value, axis=0).reshape(W+1, -1)
+        # idx = seam[i]
+        # out[i] = np.concatenate((image[i, 0:idx+1], image[i, idx:W]), axis = None).reshape(W+1, -1)  
     ### END YOUR CODE
 
     return out
@@ -356,6 +353,16 @@ def find_seams(image, k, axis=1, efunc=energy_function, cfunc=compute_cost, bfun
 
     Returns:
         seams: numpy array of shape (H, W)
+
+        if k = 2
+        seam 1 locate at where element value == 1
+        seam 2 locate at where element value == 2
+        [0,2,0,0,1]
+        [0,2,0,0,1]
+        [2,0,0,1,0]
+        [0,2,0,1,0]
+        [0,2,1,0,0]
+        [0,2,1,0,0]
     """
 
     image = np.copy(image)
@@ -447,7 +454,12 @@ def enlarge(image, size, axis=1, efunc=energy_function, cfunc=compute_cost, dfun
     assert size <= 2 * W, "size must be smaller than %d" % (2 * W)
 
     ### YOUR CODE HERE
-    
+    seams = find_seams(out, size-W)
+    seams = np.expand_dims(seams, axis=2)
+    for i in range(size-W):
+        seam = np.where(seams == i+1)[1] + i
+        out = dfunc(out, seam)
+
     ### END YOUR CODE
 
     if axis == 0:
