@@ -7,7 +7,8 @@ Last modified: 10/16/2020
 Python Version: 3.5+
 """
 
-from email.utils import make_msgid
+# from email.utils import make_msgid
+# from fcntl import LOCK_WRITE
 import numpy as np
 from skimage import color
 
@@ -37,7 +38,7 @@ def energy_function(image):
     corresponding to the derivatives of f with respect to each dimension. 
     Each derivative has the same shape as f.
     ''' 
-    dx, dy = np.gradient(gray_image)
+    dy, dx = np.gradient(gray_image)
     out = abs(dx) + abs(dy)
     ### END YOUR CODE
 
@@ -457,9 +458,12 @@ def enlarge(image, size, axis=1, efunc=energy_function, cfunc=compute_cost, dfun
     seams = find_seams(out, size-W)
     seams = np.expand_dims(seams, axis=2)
     for i in range(size-W):
-        seam = np.where(seams == i+1)[1] + i
-        out = dfunc(out, seam)
+        # seam = np.where(seams == i+1)[1] + i
+        # out = dfunc(out, seam)
+        # seams += 1
 
+        out = duplicate_seam(out, np.where(seams== i+1)[1])
+        seams = duplicate_seam(seams, np.where(seams == i+1)[1])
     ### END YOUR CODE
 
     if axis == 0:
@@ -511,6 +515,62 @@ def compute_forward_cost(image, energy):
     return cost, paths
 
 
+def energy_fast(image, energy, lower, upper):
+    """Computes energy of the input image.
+
+    For each pixel, we will sum the absolute value of the gradient in each direction.
+    Don't forget to convert to grayscale first.
+
+    Hint: Use np.gradient here
+
+    Args:
+        image: numpy array of shape (H, W, 3)
+
+    Returns:
+        out: numpy array of shape (H, W)
+    """
+    H, W, _ = image.shape
+    out = np.zeros((H, W))
+    gray_image = color.rgb2gray(image)
+
+    ### YOUR CODE HERE
+    '''
+    np.gradient return: 
+    A list of ndarrays (or a single ndarray if there is only one dimension) 
+    corresponding to the derivatives of f with respect to each dimension. 
+    Each derivative has the same shape as f.
+    ''' 
+    # only update the range that the seam covered
+    # W_out = W_energy - 1
+    # update left part
+    if lower <= 1:
+        # print(lower, upper)
+        dy, dx = np.gradient(gray_image[:, 0:upper+1])
+        updateRange = (abs(dx) + abs(dy))[:, :-1]   # range 0~upper+1
+        out = np.concatenate((updateRange, energy[:, upper+1:]), axis=1)
+    # update right part
+    elif upper >= W-2:
+        dy, dx = np.gradient(gray_image[:, lower-2:])
+        updateRange = (abs(dx) + abs(dy))[:, 1: ] # range lower-3~end
+        out = np.concatenate((energy[:, :lower-1], updateRange), axis=1)
+    # update middle part
+    else:
+        dy, dx = np.gradient(gray_image[:, lower-2:upper+2])
+        updateRange = (abs(dx) + abs(dy))[:, 1:-1] # range lower-1~upper+1
+        out = np.concatenate((energy[:, :lower-1], updateRange, energy[:, upper+2:]), axis=1)
+        
+     # if i <= 1:
+        #     energy = np.c_[efunc(out[:, 0: j+1])[:, :-1], energy[:, j+1: ]]
+        # elif j >= out.shape[1]-2:
+        #     energy = np.c_[energy[:, 0: i-1], efunc(out[:, i-2: ])[:, 1: ]]
+        # else:
+        #     energy = np.c_[energy[:, 0: i-1], efunc(out[:, i-2: j+2])[:, 1: -1], energy[:, j+2:]]
+    # print("image", image.shape, "out", out.shape)
+    ### END YOUR CODE
+
+    return out
+
+
 def reduce_fast(image, size, axis=1, efunc=energy_function, cfunc=compute_cost):
     """Reduces the size of the image using the seam carving process. Faster than `reduce`.
 
@@ -529,6 +589,7 @@ def reduce_fast(image, size, axis=1, efunc=energy_function, cfunc=compute_cost):
     """
 
     out = np.copy(image)
+    # image = color.rgb2gray(image)
     if axis == 0:
         out = np.transpose(out, (1, 0, 2))
 
@@ -540,9 +601,18 @@ def reduce_fast(image, size, axis=1, efunc=energy_function, cfunc=compute_cost):
     assert size > 0, "Size must be greater than zero"
 
     ### YOUR CODE HERE
-    # Delete that line, just here for the autograder to pass setup checks
-    out = reduce(image, size, 1, efunc, cfunc)
-    pass
+    # lower = 0
+    # upper = W
+    energy =  energy_function(out)
+    for _ in range(W-size):
+        cost, paths = cfunc(out, energy)
+        seam = backtrack_seam(paths, np.argmin(cost[-1]))
+        out = remove_seam(out, seam)
+
+        # update lower and upper bound 
+        lower = np.min(seam)
+        upper = np.max(seam)
+        energy = efunc(out, energy, lower, upper)
     ### END YOUR CODE
 
     assert out.shape[1] == size, "Output doesn't have the right shape"
