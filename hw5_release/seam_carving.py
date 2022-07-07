@@ -499,15 +499,71 @@ def compute_forward_cost(image, energy):
 
     # Initialization
     cost[0] = energy[0]
-    for j in range(W):
-        if j > 0 and j < W - 1:
-            cost[0, j] += np.abs(image[0, j+1] - image[0, j-1])
+    # for j in range(W):
+        # if j > 0 and j < W - 1:
+            # cost[0, j] += np.abs(image[0, j+1] - image[0, j-1])
+    cost[0, 1:W-1] += np.abs(image[0, 2:] - image[0, :W-2])
     paths[0] = 0  # we don't care about the first row of paths
 
     ### YOUR CODE HERE
-    pass
-    ### END YOUR CODE
+    for i in range(1, H):
+        # Calculate forward cost map at each pixel
+        '''
+        Forward cost map = M[i,j] = min(
+                                        M[i-1, j-1] + CL,
+                                        M[i-1, j] + CV,
+                                        M[i-1, j+1] + CR
+                                    )
+        where
+            CL = |I[i-1, j] - I[i, j-1]| - |I[i, j+1] - I[i, j-1]|
+            CV = |I[i, j+1] - I[i, j-1]|
+            CR = |I[i-1, j] - I[i, j+1]| - |I[i, j-1] - I[i, j+1]|
+        '''
+        M_left = cost[i-1][:W-1]
+        M_left = np.insert(M_left, 0, 1<<32, axis=0)
+        M_mid = cost[i-1]
+        M_right = cost[i-1][1:]
+        M_right = np.insert(M_right, W-1, 1<<32, axis=0)
 
+        # I[i, j-1]
+        I_left = np.insert(image[i][:W-1], 0, 0, axis=0)
+        # I[i-1, j]
+        I_mid = image[i-1]
+        # I[i, j+1]
+        I_right = np.insert(image[i][1:], W-1, 0, axis=0)
+
+        CV = np.abs(I_right - I_left)
+        CV[0] = 0
+        CV[-1] = 0
+        CL = np.abs(I_mid - I_left) + CV
+        CL[0] = 0
+        CR = np.abs(I_mid - I_right) + CV
+        CR[-1] = 0
+
+        M = np.array([M_left+CL, M_mid+CV, M_right+CR])
+        cost[i] = energy[i] + np.min(M, axis=0)
+        
+        # if i==2:
+        #     print("Ileft", I_left)
+        #     print("Imid", I_mid)
+        #     print("Iright", I_right)
+        #     print("CL", CL)
+        #     print("CV", CV)
+        #     print("CR", CR)
+        #     print("Mleft", M_left)
+        #     print("Mmid", M_mid)
+        #     print("Mright", M_right)
+
+        # Pick minimum cost at row i-1 as path
+        '''
+        M.shape = (3, W), argmin returns 0~2
+        return 0 -> path should go through up and left
+        return 1 -> path should go through up
+        return 2 -> path should go through up and right
+        '''
+        paths[i] = np.argmin(M, axis=0) - 1
+        ### END YOUR CODE
+        
     # Check that paths only contains -1, 0 or 1
     assert np.all(np.any([paths == 1, paths == 0, paths == -1], axis=0)), \
            "paths contains other values than -1, 0 or 1"
