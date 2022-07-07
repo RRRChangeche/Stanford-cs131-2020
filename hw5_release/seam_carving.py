@@ -657,8 +657,6 @@ def reduce_fast(image, size, axis=1, efunc=energy_function, cfunc=compute_cost):
     assert size > 0, "Size must be greater than zero"
 
     ### YOUR CODE HERE
-    # lower = 0
-    # upper = W
     energy =  energy_function(out)
     for _ in range(W-size):
         cost, paths = cfunc(out, energy)
@@ -697,7 +695,24 @@ def remove_object(image, mask):
     out = np.copy(image)
 
     ### YOUR CODE HERE
-    pass
+
+    # Reduce image 
+    energy =  energy_function(out)
+    weighted_energy = energy - (mask*1e10)
+    while not np.all(mask == 0):
+        cost, paths = compute_forward_cost(out, weighted_energy)
+        seam = backtrack_seam(paths, np.argmin(cost[-1]))
+        out = remove_seam(out, seam)
+        mask = remove_seam(mask, seam)
+
+        # update energy map  
+        lower = np.min(seam)    # update lower bound 
+        upper = np.max(seam)    # update upper bound
+        energy = energy_fast(out, energy, lower, upper) # return W-1 width energy = out width
+        weighted_energy = energy - (mask*1e10)
+
+    # Enlarge image
+    out = enlarge(out, W)
     ### END YOUR CODE
 
     assert out.shape == image.shape
