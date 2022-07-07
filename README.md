@@ -44,7 +44,7 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
   * Theory
   * Complexity comparison
 
-> What I've learned?
+> What did I learn\?
 >
 > * Optimize convolution implementaion by using numpy(conv_fast).
 > * It's about up to 15x faster than naive implementation(conv_nested) in this case.
@@ -107,7 +107,7 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
   * $\theta = (X^T X)^{-1} X^T y$
 * Vectorize equations
 
-> What I've learned?
+> What did I learn\?
 >
 > * All arithmetic operations are applied to a matrix element-wise.
 >
@@ -135,7 +135,7 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
   * Extracting Region of Interest (ROI)
   * Fitting lines using Hough Transform
 
-> What I've learned?
+> What did I learn\?
 >
 > * **Implement Gaussian filter**
 >
@@ -183,7 +183,7 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 * Better Image Merging - Linear Blending
 * Stitching Multiple Images
 
-> What I've learned?
+> What did I learn\?
 >
 > * **Harris corner detector**
 >   * A method to get keypoints of the image.
@@ -274,7 +274,7 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 * Extra Credit: Implement Your Own Feature
 * Quantitative Evaluation
 
-> What I've learned?
+> What did I learn\?
 >
 > * **K-Means Clustering**
 >   * An algorithm for clustering by comparing distances between every point to clusters with the given parameter k.
@@ -338,3 +338,39 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
   * Reducing and enlarging on another image
   * Forward energy
 * Object Removal
+
+> What did I learn\?
+>
+> * **Energy function**
+>   * Energy map function can be represented as: (use `np.gradient`)
+>   * E(i,j) = E(i,j) = |Img(i,j)/dx|+|Img(i,j)/dy|
+>
+> * **Compute cost**
+>   * Cost map function can be represented as:
+>   * M(i,j) = E(i,j) + min{M(i-1, j-1), M(i-1, j), M(i-1, j+1)}
+>
+> * **Backtrack seam**
+>   * A strategy to find the seam from the last row to the top row
+>
+> * **Reduce**
+>   * Steps:
+>     1. Compute the energy map
+>     2. Compute the cost map and paths direction at each pixel
+>     3. Compute the seam by backtracking
+>     4. Reduce the image by removing the seam
+>     5. Otherwise, go back to step 2
+>   * Fast reduce - only update the area of energy map that seam covered
+>
+> * **Enlarge**
+>   * Enlarge the size of the image by duplicating the low-energy seams
+>   * We get the k seams to duplicate only one time to avoid repeatedly duplicating the same lowest-energy seam
+>
+> * **Forward Cost**
+>   * A strategy to avoid getting jagged edges
+>   * Focus on removing the seams that insert the least energy into the image rather than the least energy ones
+>
+> * **Object removal**
+>   * Steps:
+>     1. Reduce the image first by giving the mask
+>     2. Get weighted energy by giving the object area we want to remove less weight
+>     3. Enlarge image back to the original size
