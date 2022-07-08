@@ -374,3 +374,43 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 >     1. Reduce the image first by giving the mask
 >     2. Get weighted energy by giving the object area we want to remove less weight
 >     3. Enlarge image back to the original size
+
+* 
+  * Backtrack seam
+  * Reduce
+* Image Enlarging
+* Faster reduce
+  * Reducing and enlarging on another image
+  * Forward energy
+* Object Removal
+
+| Pictures |
+|-|
+|**Energy function**|
+|![1_1](hw5_release/1_1_output.png) |
+
+| Compute cost (vertical) | Compute cost (horizontal) |
+|-|-|
+| ![1_2](hw5_release/1_2_output.png) | ![1_3](hw5_release/1_3_output.png) |
+
+| Backtrack seam |
+|-|
+|![2_1](hw5_release/2_1_output.png) |
+
+| Reduce (vertical) | Reduce (horizontal) |
+|-|-|
+| ![2_2](hw5_release/2_2_output.png) | ![2_3](hw5_release/2_3_output.png) |
+| **Enlarge (vertical)** | **Enlarge (horizontal**) |
+| ![3_2](hw5_release/3_2_output.png) | ![3_1](hw5_release/3_1_output.png) |
+
+| Forward cost map |
+|-|
+|![4_1](hw5_release/4_1_output.png) |
+
+| Jagged edges | Smooth edges |
+|-|-|
+| ![4_2](hw5_release/4_2_output.png) | ![4_3](hw5_release/4_3_output.png) |
+
+| Object Removal |
+|-|
+|![5_1](hw5_release/5_output.png) |
