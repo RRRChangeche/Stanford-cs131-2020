@@ -375,15 +375,6 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 >     2. Get weighted energy by giving the object area we want to remove less weight
 >     3. Enlarge image back to the original size
 
-* 
-  * Backtrack seam
-  * Reduce
-* Image Enlarging
-* Faster reduce
-  * Reducing and enlarging on another image
-  * Forward energy
-* Object Removal
-
 | Pictures |
 |-|
 |**Energy function**|
