@@ -408,4 +408,12 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 
 ## hw6: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw6_release)
 
-
+* Sliding Window
+* Image Pyramids
+* Deformable Parts Detection (DPM)
+  * Compute displacement
+  * Shift heatmap
+* Gaussian Filter
+* K-Nearest Neighbors Classification
+  * Cross validation on raw pixel features
+  * Cross validation on HOG features
