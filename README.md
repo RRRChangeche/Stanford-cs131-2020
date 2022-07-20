@@ -405,3 +405,7 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 | Object Removal |
 |-|
 |![5_1](hw5_release/5_output.png) |
+
+## hw6: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw6_release)
+
+
