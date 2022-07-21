@@ -1,7 +1,7 @@
 import numpy as np
 from skimage import feature, data, color, exposure, io
 from skimage.transform import rescale, resize, downscale_local_mean
-from skimage.filters import gaussian
+from skimage.filters import gaussian, sobel_h, sobel_v
 from scipy import signal
 from scipy.ndimage import interpolation
 import math
@@ -24,7 +24,10 @@ def hog_feature(image, pixel_per_cell=8):
         hog_image: an image representation of hog provided by skimage.
     """
     ### YOUR CODE HERE
-    pass
+    # Use the hog function provided by skimage
+    # For details of HOG, we can refer to hw3 hog_descriptor function
+    hog_feature, hog_image = feature.hog(image, pixels_per_cell=(pixel_per_cell, pixel_per_cell),
+                                         block_norm="L1", visualize=True)
     ### END YOUR CODE
     return (hog_feature, hog_image)
 
@@ -72,7 +75,10 @@ def sliding_window(image, template_feature, step_size, window_size, pixel_per_ce
         for c in range(0, W, step_size):
             score = 0
             ### YOUR CODE HERE
-            pass
+            window = image[r:r+step_size, c:c+step_size]
+            print(window.shape)
+            print(template_feature.shape)
+            score = window.dot(template_feature)
             ### END YOUR CODE
             response_map[(r) // step_size, (c) // step_size] = score
 
