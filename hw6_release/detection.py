@@ -75,10 +75,14 @@ def sliding_window(image, template_feature, step_size, window_size, pixel_per_ce
         for c in range(0, W, step_size):
             score = 0
             ### YOUR CODE HERE
-            window = image[r:r+step_size, c:c+step_size]
-            print(window.shape)
-            print(template_feature.shape)
-            score = window.dot(template_feature)
+            window = pad_image[r:r+winH, c:c+winW]
+            hog_feature = feature.hog(window, pixels_per_cell = (pixel_per_cell, pixel_per_cell), block_norm="L1")
+            score = hog_feature.dot(template_feature)
+            
+            if score > max_score:
+                max_score = score
+                maxr = r
+                maxc = c
             ### END YOUR CODE
             response_map[(r) // step_size, (c) // step_size] = score
 
@@ -118,7 +122,8 @@ def pyramid(image, scale=0.9, min_size=(200, 100)):
     while True:
         # Use "break" to exit this loop when termination conditions are met.
         ### YOUR CODE HERE
-        pass
+        curH, curW = image.shape
+        if curH < min_size[0] or curW < min_size[1]: break
         ### END YOUR CODE
 
         # Compute the new dimensions of the image and resize it
@@ -156,7 +161,16 @@ def pyramid_score(image, template_feature, shape, step_size=20,
 
     images = pyramid(image, scale)
     ### YOUR CODE HERE
-    pass
+    for scale, image in images:
+        (score, r, c, response_map_resized) = \
+    sliding_window(image, template_feature, step_size=30, window_size=shape,  pixel_per_cell = pixel_per_cell)
+
+        if score > max_score:
+            max_score = score
+            maxr = r
+            maxc = c
+            max_scale = scale
+            max_response_map = response_map_resized
     ### END YOUR CODE
     return max_score, maxr, maxc, max_scale, max_response_map
 
@@ -187,8 +201,21 @@ def compute_displacement(part_centers, face_shape):
 
     """
     d = np.zeros((part_centers.shape[0], 2))
+    rows = part_centers.shape[0]
     ### YOUR CODE HERE
-    pass
+    face_cy = face_shape[0]//2
+    face_cx = face_shape[1]//2
+    face_center = np.array([face_cy, face_cx])
+
+    # d is the array where each row is the main center (face center) minus the part center.
+    d = face_center - part_centers
+
+    # Vector mu is computed by taking an average from the rows of d.
+    mu = np.average(d, axis=0)
+
+    # sigma is the standard deviation among the rows.
+    sigma = np.std(d, axis=0)
+    
     ### END YOUR CODE
     return mu, sigma
 
