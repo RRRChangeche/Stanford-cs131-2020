@@ -1,3 +1,4 @@
+from inspect import stack
 import numpy as np
 from skimage import feature, data, color, exposure, io
 from skimage.transform import rescale, resize, downscale_local_mean
@@ -243,7 +244,7 @@ def shift_heatmap(heatmap, mu):
     heatmap = np.copy(heatmap)
 
     # normalize heatmap
-    heatmap /= np.max(heatmap)
+    heatmap = heatmap/ np.max(heatmap)
 
     # shift by mu
     new_heatmap = interpolation.shift(heatmap, mu)
@@ -277,18 +278,75 @@ def gaussian_heatmap(heatmap_face, heatmaps, sigmas):
     heatmaps = list(np.copy(heatmaps))
     sigmas = list(np.copy(sigmas))
     ### YOUR CODE HERE
-    pass
+    new_heatmap = heatmap_face
+    for (map, sigma) in zip(heatmaps, sigmas):
+        new_heatmap += gaussian(map, sigma)
+
+    maxc, maxr = np.unravel_index(np.argmax(new_heatmap), new_heatmap.shape)
     ### END YOUR CODE
-    return heatmap, maxr, maxc
+    return new_heatmap, maxr, maxc
 
 
-def detect_multiple(image, response_map):
+def detect_multiple(image, response_map, ratio):
     """
     Extra credit
     """
-    detected_faces = None
+    detected_faces = []
+    H, W = response_map.shape
     ### YOUR CODE HERE
-    pass
+    # get max value in response_map first, and get values bigger than 90% max
+    maxheat = np.max(response_map)
+    face_mask = response_map > ratio*maxheat
+    maxR, maxC = 0, 0
+    # print(np.count_nonzero(response_map))
+    # print(np.count_nonzero(face_mask))
+
+    # def union(response_map, face_mask, maxValue, pos, i, j):
+    #     # exceed maximum recursion depth
+    #     # return
+    #     if  i < 0 or j < 0 or i >= H or j >= W or not face_mask[i][j]: return 
+    #     # set visited
+    #     face_mask[i][j] = False
+    #     # get max position
+    #     # if response_map[i][j] > maxValue:
+    #     maxValue = response_map[i][j]
+    #     pos[0] = i
+    #     pos[1] = j
+    #     # DFS
+    #     union(response_map, face_mask, maxValue, pos, i+1, j)
+    #     union(response_map, face_mask, maxValue, pos, i-1, j)
+    #     union(response_map, face_mask, maxValue, pos, i, j+1)
+    #     union(response_map, face_mask, maxValue, pos, i, j-1)
+
+    def union(response_map, face_mask, maxValue, pos, i, j):
+        stk = []
+        stk.append([i, j])
+
+        while stk:
+            i, j = stk.pop()
+            # if out of bound
+            if i < 0 or j < 0 or i >= H or j >= W: continue
+            # if visited or value not in range
+            if not face_mask[i][j]: continue
+            # set visited
+            face_mask[i][j] = False
+            # get max
+            if response_map[i][j] > maxValue:
+                maxValue = response_map[i][j]
+                pos[0] = i
+                pos[1] = j
+            # next
+            for h, w in [[1,0], [0, -1], [-1, 0], [0, 1]]:
+                stk.append([i+h, j+w])
+
+
+    for i in range(H):
+        for j in range(W):
+            if face_mask[i][j]: 
+                pos = [maxR, maxC]
+                union(response_map, face_mask, 0, pos, i, j)
+                detected_faces.append(pos)
+
     ### END YOUR CODE
     return detected_faces
 

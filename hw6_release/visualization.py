@@ -169,3 +169,33 @@ def plot_part6_1(winH, winW, heatmap, image, i, j):
     fig.colorbar(im, ax=ax2)
     plt.tight_layout()
     plt.show()
+
+
+def plot_part5Ex_1(winH, winW, heatmap, image, locations):
+    """plot heatmaps and optimal window."""
+    fig, (ax1, ax2) = plt.subplots(2, figsize=(10,10))
+    im = ax1.imshow(resize(image, heatmap.shape))
+    for i, j in locations:
+        rect = patches.Rectangle((j - winW // 2, i - winH // 2),
+                                winW,
+                                winH,
+                                linewidth=1,
+                                edgecolor='r',
+                                facecolor='none')
+        ax1.add_patch(rect)
+    fig.colorbar(im, ax=ax1)
+
+    ax2.set_title('Gaussian Filter Heatmap')
+    im = ax2.imshow(heatmap, cmap='viridis', interpolation='nearest')
+    for i, j in locations:
+        rect = patches.Rectangle((j - winW // 2, i - winH // 2),
+                                winW,
+                                winH,
+                                linewidth=1,
+                                edgecolor='r',
+                                facecolor='none')
+        ax2.add_patch(rect)
+    fig.colorbar(im, ax=ax2)
+    plt.tight_layout()
+    plt.show()
+
