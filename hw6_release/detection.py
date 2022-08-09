@@ -244,10 +244,10 @@ def shift_heatmap(heatmap, mu):
     heatmap = np.copy(heatmap)
 
     # normalize heatmap
-    heatmap = heatmap/ np.max(heatmap)
+    new_heatmap = heatmap / np.max(heatmap)
 
     # shift by mu
-    new_heatmap = interpolation.shift(heatmap, mu)
+    new_heatmap = interpolation.shift(new_heatmap, mu)
 
     pass
     ### END YOUR CODE
