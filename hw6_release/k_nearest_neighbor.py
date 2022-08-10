@@ -1,3 +1,5 @@
+from cmath import sqrt
+from random import shuffle
 import numpy as np
 
 
@@ -15,7 +17,6 @@ def compute_distances(X1, X2):
     M = X1.shape[0]
     N = X2.shape[0]
     assert X1.shape[1] == X2.shape[1]
-
     dists = np.zeros((M, N))
 
     # YOUR CODE HERE
@@ -27,6 +28,19 @@ def compute_distances(X1, X2):
     #
     # HINT: Try to formulate the l2 distance using matrix multiplication
 
+    #  L2 distance = sqrt(sum(X1[i]-X2[i])^2)
+    #  X1.shape = (M, D)
+    #  X2.shape = (N, D)
+    # dists = np.linalg.norm(np.tile(X1, N).reshape(M, N, -1) - X2, axis=2)  # L2.shape = (M, N)
+
+    # for i in range(M):
+    #     for j in range(N):
+    #         dists[i][j] = np.sum((X1[i]-X2[j])**2)**0.5
+
+    dists = np.sum(X1**2, axis=1).reshape(M, -1) + \
+            np.sum(X2**2, axis=1) - 2 * np.matmul(X1, X2.T)
+
+    dists = dists**0.5
     pass
     # END YOUR CODE
 
@@ -62,7 +76,9 @@ def predict_labels(dists, y_train, k=1):
     # Hint: Look up the functions numpy.argsort and numpy.bincount
 
     # YOUR CODE HERE
-    pass
+    for i in range(num_test):
+        closest_y = y_train[np.argsort(dists[i])][:k]   # list of k-nearest y labels
+        y_pred[i] = np.bincount(closest_y).argmax()  # find the most common label
     # END YOUR CODE
 
     return y_pred
@@ -112,6 +128,14 @@ def split_folds(X_train, y_train, num_folds):
 
     # YOUR CODE HERE
     # Hint: You can use the numpy array_split function.
+    X_split = np.array_split(X_train, num_folds)    # return type is list
+    y_split = np.array_split(y_train, num_folds)
+    for i in range(num_folds):
+        # print(np.delete(X_split, i).reshape(training_size, -1))
+        X_trains[i] = np.concatenate(X_split[:i] + X_split[i+1:], axis=0)
+        y_trains[i] = np.concatenate(y_split[:i] + y_split[i+1:], axis=0)
+        X_vals[i] = X_split[i]
+        y_vals[i] = y_split[i]
     pass
     # END YOUR CODE
 
