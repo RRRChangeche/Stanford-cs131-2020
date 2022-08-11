@@ -475,10 +475,10 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 | ![4_1](hw6_release/4_1_output.png) | ![4_2](hw6_release/4_2_output.png) |
 | **Nose** | **Mouth** |
 | ![4_3](hw6_release/4_3_output.png) | ![4_2](hw6_release/4_4_output.png) |
-| **Shift-heatmap** | **Result** |
-| ![4_5](hw6_release/4_5_output.png) | ![4_6](hw6_release/4_6_output.png) |
-| **Detect multiple faces** |
-|![5_1](hw6_release/5_output.png) |
+| **Shift-heatmap** |
+| ![4_5](hw6_release/4_5_output.png) |
+| **Result** | **Detect multiple faces** |
+| ![4_6](hw6_release/4_6_output.png) |![5_1](hw6_release/5_output.png) |
 
 ### **K-Nearest Neighbors Classification/ Cross validation**
 
