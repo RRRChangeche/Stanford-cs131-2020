@@ -408,6 +408,7 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 
 ## hw6: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw6_release)
 
+* Hog Representation
 * Sliding Window
 * Image Pyramids
 * Deformable Parts Detection (DPM)
@@ -417,3 +418,71 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 * K-Nearest Neighbors Classification
   * Cross validation on raw pixel features
   * Cross validation on HOG features
+
+> What did I learn\?
+>
+> * **Hog Representation**
+>   * using `skimage.feature.hog` function
+>
+> * **Sliding Window**
+>   * use in the template match
+>   * The hog score is computed as the dot product between the hog feature of the sliding window and the hog feature of the template
+>   * not working when the image's size is changed
+>
+> * **Image Pyramids**
+>   * using template match in different scales
+>   * Solve the problems when image's size is changed
+>
+> * **Deformable Parts Detection (DPM)**
+>   * Compute displacement
+>   * Shift heatmap (use interpolation.shift from scipy.ndimage)
+>   * Steps:
+>     1. Make sure there are labeled data of each parts, parts[i] =  [[x1,y1], [x2,y2], [x3,y3]...]
+>     2. Calculate averaging images and HOG features of each parts
+>     3. Calculate averaging displacements and standard deviations between each parts's center and face's center
+>     4. Calculate response map of face feature (sliding window + pyramids)
+>     5. Calculate response map of each parts (parts_feature)
+>     6. Move each parts[i] with displacement mu[i]
+>
+> * **Gaussian Filter**
+>   * Apply gaussian filter to each parts' heatmap and add them to the heatmap of the face
+>   * The maximum value in combined heatmap is where the face located
+>
+> * **K-Nearest Neighbors Classification/ Cross-validation**
+>   * We have to find the best `k` for KNN algorithm by iterating k in each cross-validation fold
+>   * We perform cross-validation by spliting the dataset into N folds (N = 5 in this case)
+>   * Steps:
+>     1. Compute the distances between all features from X_train and from X_test
+>     2. Split the data into 5 folds to perform cross-validation
+>     3. Measure the mean accuracy for each value of `k` by averaging 5 accuracies
+>   * The accuracy performance of cross-validation on HOG features is much better than cross-validation on raw pixels
+
+| Pictures |
+|-|
+|**Hog Representation**|
+|![1_1](hw6_release/1_output.png) |
+|**Sliding Window**|
+|![1_1](hw6_release/2_output.png) |
+
+| Image Pyramids | Scaled image |
+|-|-|
+| ![3_1](hw6_release/3_1_output.png) | ![3_2](hw6_release/3_2_output.png) |
+
+### **Deformable Parts Detection (DPM)**
+
+| **Left eye** | **Right eye** |
+|-|-|
+| ![4_1](hw6_release/4_1_output.png) | ![4_2](hw6_release/4_2_output.png) |
+| **Nose** | **Mouth** |
+| ![4_3](hw6_release/4_3_output.png) | ![4_2](hw6_release/4_4_output.png) |
+| **Shift-heatmap** | **Result** |
+| ![4_5](hw6_release/4_5_output.png) | ![4_6](hw6_release/4_6_output.png) |
+
+| Detect multiple faces |
+|-|
+|![5_1](hw6_release/5_output.png) |
+### **K-Nearest Neighbors Classification/ Cross validation**
+
+| **Cross validation on raw pixels** | **Cross validation on HOG features** |
+|-|-|
+| ![6_1](hw6_release/6_1_output.png) | ![6_2](hw6_release/6_2_output.png) |
