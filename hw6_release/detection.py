@@ -77,7 +77,8 @@ def sliding_window(image, template_feature, step_size, window_size, pixel_per_ce
             score = 0
             ### YOUR CODE HERE
             window = pad_image[r:r+winH, c:c+winW]
-            hog_feature = feature.hog(window, pixels_per_cell = (pixel_per_cell, pixel_per_cell), block_norm="L1")
+            # hog_feature = feature.hog(window, pixels_per_cell = (pixel_per_cell, pixel_per_cell), block_norm="L1")
+            hog_feature = feature.hog(window, pixels_per_cell = (pixel_per_cell, pixel_per_cell))
             score = hog_feature.dot(template_feature)
             
             if score > max_score:
@@ -164,7 +165,7 @@ def pyramid_score(image, template_feature, shape, step_size=20,
     ### YOUR CODE HERE
     for scale, image in images:
         (score, r, c, response_map_resized) = \
-    sliding_window(image, template_feature, step_size=30, window_size=shape,  pixel_per_cell = pixel_per_cell)
+    sliding_window(image, template_feature, step_size=30, window_size=shape, pixel_per_cell = pixel_per_cell)
 
         if score > max_score:
             max_score = score
@@ -298,6 +299,7 @@ def detect_multiple(image, response_map, ratio):
     maxheat = np.max(response_map)
     face_mask = response_map > ratio*maxheat
     maxR, maxC = 0, 0
+    response_map[response_map < ratio*maxheat] = 0
     # print(np.count_nonzero(response_map))
     # print(np.count_nonzero(face_mask))
 
