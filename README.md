@@ -7,7 +7,19 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 * Environment: python3.6+
 * Requirements: run     "pip install -r requirements.txt"
 
-## hw0: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw0_release)
+## Outline
+
+* hw0 - Basics
+* hw1 - Filters
+* hw2 - Edges detect - Smart car lane detection
+* hw3 - Panorama - Image stitching
+* hw4 - Segmentation - clustering
+* hw5 - Seam carving
+* hw6 - Object detection
+* hw7 - Tracking - optical flow
+* hw8 - Camera Models
+
+## hw0 - Basics [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw0_release)
 
 * Linear Algebra and Numpy review
 * Image manipulation
@@ -22,7 +34,9 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 | ------------- | ------------- | ------------- |
 | ![0_1](hw0_release/image1.jpg)  | ![0_2](hw0_release/16_16_baboon.png)  | ![0_3](hw0_release/rotated_output.png)  |
 
-## hw1: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw1_release)
+## hw1 - Filters [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw1_release)
+
+(Lecture 03)
 
 * Convolution
   * prove Commutative property
@@ -121,7 +135,9 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 > ex: c = a*b, when a's shape is (1,3)/ b's shape is (3,1), then c's shape is (3,3) because of broadcasting  operation.
 >
 
-## hw2: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw2_release)
+## hw2 - Edges detect - Smart car lane detection [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw2_release)
+
+(Lecture 03-04)
 
 * Canny edge detector
   1. Smoothing
@@ -173,7 +189,9 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 |**Hough transform**|
 |![2_3](hw2_release/2_3_output.png) |
 
-## hw3: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw3_release)
+## hw3 - Panorama - Image stitching [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw3_release)
+
+(Lecture 04-06)
 
 * Harris corner detector
 * Describing and Matching Keypoints
@@ -262,7 +280,9 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 |**Stitching Multiple Images**|
 |![6](hw3_release/6_output.png) |
 
-## hw4: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw4_release)
+## hw4 - Segmentation - clustering [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw4_release)
+
+(Lecture09-10)
 
 * Clustering Algorithm
   * K-Means Clustering
@@ -325,7 +345,9 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 |-|
 |![3](hw4_release/3_output.png) |
 
-## hw5: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw5_release)
+## hw5 - Seam carving [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw5_release)
+
+(Lecture11)
 
 * Image Reducing using Seam Carving
   * Energy function
@@ -406,7 +428,9 @@ This repository contains the released assignment for the fall 2020 of CS131, a c
 |-|
 |![5_1](hw5_release/5_output.png) |
 
-## hw6: [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw6_release)
+## hw6 - Object detection [[link]](https://github.com/RRRChangeche/Stanford_CS131_2020/tree/main/hw6_release)
+
+(Lecture12-14)
 
 * Hog Representation
 * Sliding Window
